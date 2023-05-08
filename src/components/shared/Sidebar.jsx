@@ -13,7 +13,7 @@ const Sidebar = () => {
   return (
     <div className="flex flex-col bg-neutral-900 md:min-w-[300px] text-white ">
       <div className="flex items-left justify-left my-6 pl-2">
-        <img className="w-[280px] " src={Logac} alt="" />
+        <img className="w-[220px] " src={Logac} alt="" />
       </div>
   
 

@@ -22,7 +22,7 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 	},
 	{
 		key: '2',
-		label: 'Battery Autonomy',
+		label: 'Battery',
 		path: '/battery',
 		icon: <BatteryIcon/>
 	},

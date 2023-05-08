@@ -1,17 +1,33 @@
-import React from "react";
-import { FaRegSave } from "react-icons/fa"
-import { MdOutlineCancel } from "react-icons/md";
+import React, {useState} from "react";
+import { FaRegSave,FaCheckCircle } from "react-icons/fa"
+import { MdCancel} from "react-icons/md";
+import { FcCheckmark,FcCancel} from "react-icons/fc";
 const Editable = ({editData, handleEditInputChange,cancelEdit}) => {
+
+  //   const [isHovering, setIsHovering] = useState(false);
+  //   const[saveHover,setSaveHover]=useState(false)
+  //   const[cancelHover,setCancelHover]=useState(false)
+  
+  //   const handleSaveMouseOver=()=>{
+  //     setIsHovering(true)
+  //     setSaveHover(true)
+  //   }
+  //   const handleSaveMouseOut=()=>{
+  //     setIsHovering(false)
+  //     setSaveHover(false)
+    
+  // }
+
   return (
     <tr>
-      <td>
+      <td colSpan={2}>
         <input
           type="text"          
           name="name" 
           value={editData.name} 
           onChange={handleEditInputChange}        
           required     
-          className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+          className=" md:w-full py-2 px-4 bg-blue-50 border border-[#e2e2e2] placeholder-gray-400 text-ellipsis "
         />
       </td>
       <td>
@@ -21,7 +37,7 @@ const Editable = ({editData, handleEditInputChange,cancelEdit}) => {
           value={editData.quantity}   
           onChange={handleEditInputChange}  
           required     
-          className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+          className=" md:w-full py-2 px-4 bg-blue-50 border border-[#e2e2e2] placeholder-gray-400  "
         />
       </td>
       <td>
@@ -32,7 +48,7 @@ const Editable = ({editData, handleEditInputChange,cancelEdit}) => {
           value={editData.standby}   
           onChange={handleEditInputChange}  
           required     
-          className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+          className=" md:w-full py-2 px-4 bg-blue-50  border border-[#e2e2e2] placeholder-gray-400  "
         />
       </td>
       <td>
@@ -40,7 +56,7 @@ const Editable = ({editData, handleEditInputChange,cancelEdit}) => {
           type="number"
           name="totalStandby"
          
-          className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+          className=" md:w-full py-2 px-4 bg-blue-50 border border-[#e2e2e2] placeholder-gray-400  "
         />
       </td>
       <td>
@@ -51,7 +67,7 @@ const Editable = ({editData, handleEditInputChange,cancelEdit}) => {
           value={editData.alarm}  
           onChange={handleEditInputChange}   
           required     
-          className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+          className=" md:w-full py-2 px-4 bg-blue-50 border border-[#e2e2e2] placeholder-gray-400  "
         />
       </td>
       <td>
@@ -59,33 +75,42 @@ const Editable = ({editData, handleEditInputChange,cancelEdit}) => {
           type="number"
           name="totalAlarm"
            
-          className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+          className=" md:w-full py-2 px-4 bg-blue-50 border border-[#e2e2e2] placeholder-gray-400  "
         />
       </td>
-      <td className="flex text-center py-2 px-4">
+
+
+
+      <td className="text-left pl-2">
+
+        <div className="tooltip flex flex-col p-1">          
         <button 
         type="submit"
-        className="text-xs text-white bg-sky-400 flex py-1 px-2 rounded-lg items-center "
+        className="text-xl items-center "
+        // onMouseOver={handleSaveMouseOver}
+        // onMouseOut={handleSaveMouseOut}
         >
-          <FaRegSave className="text-sm mr-1"/>Save
+          <FcCheckmark/>
           </button>
+            <span className="tooltiptext block">Save</span>          
+        </div>
+
+
+        <div className="tooltip flex flex-col p-1">
         <button 
-        onClick={()=>cancelEdit()}
-        className="text-xl text-red-500 "
+        onClick={()=>cancelEdit()}        
+        className="text-xl items-center"
         >
-          <MdOutlineCancel/>
+          <FcCancel/>
           </button>
-      </td>
+          <span className="tooltiptext block">Cancel</span>  
+
+        </div>
+      </td>      
+
       
       </tr>
   );
 };
 
 export default Editable;
-{/* <button
-type="button"
-className="text-xs text-white bg-sky-400 flex py-1 px-2 rounded-lg items-center "
-onClick={(e) => handleEditClick(e, current)}
->
-<FaRegEdit className="text-sm mr-1"/>Edit
-</button> */}

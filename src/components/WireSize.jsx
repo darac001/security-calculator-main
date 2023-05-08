@@ -24,7 +24,7 @@ const WireSize = () => {
   const para1 =
     " Determines wire size to meet specific voltage drop limits for a specific conductor run.";
   const para2 =
-    " When sizing conductors, calculations limits wire size to voltage drop  and NEC ampacity. Wire size calculator is designed for applications using AWG and mm2 sizes only. Enter your values in the calculator below!";
+    " When sizing conductors, calculations limits wire size to voltage drop. Wire size calculator is designed for applications using AWG and mm2 sizes only. Enter your values in the calculator below!";
   // specific resistance for copper (ohmm2/m)
   // specific resistance for copper (ohmm2/m)
   const ro = 0.0175;

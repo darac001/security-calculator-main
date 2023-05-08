@@ -1,15 +1,15 @@
-import React from "react";
-import { FaRegEdit } from "react-icons/fa"
+import React, { useState } from "react";
+import { FaRegEdit,FaMinusCircle } from "react-icons/fa"
 
-const ReadOnly = ({current,handleEditClick}) => {
-  
+const ReadOnly = ({current,handleEditClick,handleDelete}) => {
+
 
   return (
     
     <tr      
       key={current.id}
     >
-      <td className=" md:w-full py-2 px-4 h-[38px] bg-white border border-[#e2e2e2] placeholder-gray-400">
+      <td className=" md:w-full py-2 px-4 h-[38px] bg-white border border-[#e2e2e2] placeholder-gray-400 text-overflow" colSpan={2}>
         {current.name}
       </td>
       <td className=" md:w-full py-2 px-4 h-[38px] bg-white border border-[#e2e2e2] placeholder-gray-400">
@@ -27,14 +27,49 @@ const ReadOnly = ({current,handleEditClick}) => {
       <td className=" md:w-full py-2 px-4 h-[38px] bg-white border border-[#e2e2e2] placeholder-gray-400">
         {current.totalAlarm}
       </td>
-      <td className="md:w-full py-2 px-4 h-[38px]">
-      <button
+      <td className="text-left pl-2">
+      {/* <button
           type="button"
-          className="text-xs text-white bg-sky-400 flex py-1 px-2 rounded-lg items-center "
+          className="text-blue-500 flex py-1 px-2 rounded-lg items-center "
           onClick={(e) => handleEditClick(e, current)}
         >
-          <FaRegEdit className="text-sm mr-1"/>Edit
-        </button>
+          <FaRegEdit className="text-lg mr-1"/>
+
+        </button> */}
+
+        <div className="tooltip flex flex-col p-1">          
+        <button 
+        type="button"
+        className="text-lg items-center text-blue-500 "
+        onClick={(e) => handleEditClick(e, current)}
+
+        >
+          <FaRegEdit/>
+          </button>
+            <span className="tooltiptext block">Edit</span>          
+        </div>
+
+
+
+
+        {/* <button
+        type="button"
+        className="text-red-500 flex py-1 px-2 rounded-lg items-center "
+        onClick={()=>handleDelete(current.id)}>
+          <FaMinusCircle className="text-lg mr-1"/>
+          
+        </button> */}
+
+        <div className="tooltip flex flex-col p-1">          
+        <button 
+        type="button"
+        className="text-lg items-center text-red-600 "
+        onClick={()=>handleDelete(current.id)}
+        >
+          <FaMinusCircle/>
+          </button>
+            <span className="tooltiptext block">Delete</span>          
+        </div>
 
       </td>
     </tr>
@@ -42,3 +77,6 @@ const ReadOnly = ({current,handleEditClick}) => {
 };
 
 export default ReadOnly;
+
+
+

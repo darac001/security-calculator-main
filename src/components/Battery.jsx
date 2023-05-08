@@ -5,6 +5,8 @@ import { useState } from "react";
 import ReadOnly from "./batterycomponents/ReadOnly";
 import Editable from "./batterycomponents/Editable";
 import FirstRow from "./batterycomponents/FirstRow";
+import { jsPDF } from "jspdf";
+import 'jspdf-autotable'
 
 const Battery = () => {
   const [currents, setCurrents] = useState([
@@ -50,6 +52,8 @@ const Battery = () => {
 
   const [editCurrentId, setEditCurrentId] = useState(null);
 
+  const[requiredBattery,setRequiredBattery]=useState(0)
+
   let totalStandbySum = currents.reduce((total, current) => {
     return (Number(total) + Number(current.totalStandby)).toFixed(2);
   }, 0);
@@ -62,6 +66,7 @@ const Battery = () => {
   });
   // console.log(filteredCurrents);
   // console.log(currents);
+  
 
   useEffect(() => {
     // console.log(totalStandbySum);
@@ -77,18 +82,21 @@ const Battery = () => {
 
   // add 20% contingency to the total
     let total = ((1 + Number(contingency)/100)*(Number(ahStandby)+Number(ahAlarm))).toFixed(2)
+
+    let battery = Math.ceil(total)
     // console.log(ahStandbyCalc);
     setSumOfStandby(totalStandbySum);
     setSumOfAlarm(totalAlarmSum);
     setAhStandby(ahStandbyCalc);
     setAhAlarm(ahAlarmCalc);
     setTotalAh(total)
+    setRequiredBattery(battery)
   }, [currents, sumOfStandby, autonomyStandby, sumOfAlarm, autonomyAlarm,ahStandby,ahAlarm,contingency]);
 
   const title = "BATTERY SIZE CALCULATOR";
-  const para1 = " xxxxxxxxxxxxxxxxx";
+  const para1 = " Determines size of the battery to meet specific required hours of autonomy based on the load.";
   const para2 =
-    " xxxxxxxxxxxxxxxxxxxxxxxxxxxalculator is designed for applications using AWG and mm2 sizes only. Enter your values in the calculator below!";
+    " Enter your values in the calculator below!";
 
   function handleAddNewDevice(e) {
     e.preventDefault();
@@ -145,6 +153,16 @@ const Battery = () => {
     setEditData({ ...editData, [name]: value });
   };
 
+
+  const handleDelete=(currentId)=>{
+    const newerCurrents=[...currents]
+    const indexOfDelete= currents.findIndex(
+      (current) => current.id === currentId
+    );
+    newerCurrents.splice(indexOfDelete,1)
+    setCurrents(newerCurrents)
+  }
+
   const handleEditSubmit = (e) => {
     e.preventDefault();
     const editedCurrent = {
@@ -168,6 +186,84 @@ const Battery = () => {
 
   const cancelEdit=()=>{
     setEditCurrentId(null)
+  }
+
+  
+  // pdfprinter
+  // const createPDF = async () => {
+  //   const pdf = new jsPDF("landscape", "pt", "a4");
+  //   const data = await document.querySelector("#pdf");
+  //   pdf.html(data).then(() => {
+  //     pdf.save("shipping_label.pdf");
+  //   });
+    
+  // };
+  const createPDF=()=>{
+    const doc = new jsPDF()
+  doc.autoTable({ 
+    margin: {top: 20},
+    html: '#my-table',
+    theme: 'striped',
+    columnStyles: {
+      0: {
+          columnWidth: 10
+      },
+      1: {
+          columnWidth: 10
+      },
+      2: {
+          columnWidth: 30
+      },
+      3: {
+          columnWidth: 30
+      },
+      4: {
+          columnWidth: 30
+      },
+      5: {
+          columnWidth: 30
+      },
+      6: {
+          columnWidth: 30
+      },
+
+  },
+   
+    styles: { cellPadding: 1, fontSize: 8, lineColor: [44, 62, 80],lineWidth: 0.1, },
+    
+    headStyles:{ valign: 'middle',halign:'left',fillColor: [220,220,220],textColor: [0,0,0]},
+    bodyStyles: { valign: 'middle',halign:'left',cellWidth:'50' },
+   })
+  doc.autoTable({ 
+    columnStyles: {
+      0: {
+          columnWidth: 5
+      },
+      1: {
+          columnWidth: 5
+      },
+      2: {
+          columnWidth: 15
+      },
+
+
+  },
+    html: '#my-table2',
+    theme: 'striped',
+  tableWidth:60,
+    styles: { cellPadding: 1, fontSize: 8, lineColor: [44, 62, 80],lineWidth: 0.1, },
+    
+    headStyles:{ valign: 'middle',halign:'center',fillColor: [220,220,220],textColor: [0,0,0]},
+    bodyStyles: { valign: 'middle',halign:'left',cellWidth:'30' },
+   })
+
+    doc.save('table.pdf')
+
+
+  
+    
+
+
   }
 
   return (
@@ -220,7 +316,7 @@ const Battery = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="e.g. Glassbreak"
-                        className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+                        className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400 "
                       />
                     </td>
                     <td>
@@ -240,7 +336,7 @@ const Battery = () => {
                       <input
                         type="number"
                         min="0"
-                        step={0.1}
+                        step={1}
                         id="standby"
                         name="standby"
                         value={addNewData.standby}
@@ -257,7 +353,7 @@ const Battery = () => {
                       <input
                         type="number"
                         min="0"
-                        step={0.1}
+                        step={1}
                         id="alarm"
                         // name is important, call it same as it is called in the addNewData object
                         name="alarm"
@@ -282,16 +378,16 @@ const Battery = () => {
         </div>
       </div>
 
-      <div className="flex p-5 flex-col md:full w-full col-span-3">
+      <div className="flex p-5 flex-col md:full w-full col-span-3" id="pdf">
         {/* <div className="text-s font-bold text-white p-2 text-center bg-[#29abe0]">TOTALS</div> */}
         {/* <hr className="mb-4"/> */}
         <form onSubmit={handleEditSubmit}>
-          <table className="w-full text-sm text-left text-gray-800 table-fixed">
+          <table id="my-table"  className="w-full text-sm text-left text-gray-800 table-fixed">
             <thead className="text-xs text-gray-700 bg-gray-50  ">
               <tr className="px-6 py-3 text-center text-white  bg-[#29abe0] h-">
                 <th
                   scope="col"
-                  colSpan={6}
+                  colSpan={7}
                   className="px-6 py-2 text-lg text-center h-2"
                 >
                   TOTALS
@@ -300,7 +396,7 @@ const Battery = () => {
               <tr>
                 <th
                   scope="col"
-                  colSpan={2}
+                  colSpan={3}
                   className="px-6 py-3 text-center h-2 border border-[#e2e2e2]"
                 ></th>
                 <th
@@ -321,6 +417,7 @@ const Battery = () => {
               <tr>
                 <th
                   scope="col"
+                  colSpan={2}
                   className="px-6 py-3 text-center h-2 border border-[#e2e2e2]"
                 >
                   DESCRIPTION
@@ -376,6 +473,7 @@ const Battery = () => {
                       current={current}
                       currentAdded={currentAdded}
                       handleEditClick={handleEditClick}
+                      handleDelete={handleDelete}
                     />
                   )}
                 </>
@@ -389,7 +487,7 @@ const Battery = () => {
           </div>
           <div>
             <div className="grid grid-cols-5">
-              <table className="w-full text-xs text-gray-800 bg-gray-50  table-fixed col-span-2">
+              <table id="my-table2"  className="w-full text-xs text-gray-800 bg-gray-50  table-fixed col-span-2">
                 <tr className="px-6 py-3 text-center text-white  bg-[#29abe0] ">
                   <th
                     scope="col"
@@ -527,10 +625,25 @@ const Battery = () => {
                     {totalAh}
                   </td>
                 </tr>
+                <tr>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                    colSpan={2}
+                  >
+                    REQUIRED BATTERY (AH)
+                  </th>
+                  <td className=" md:w-full py-2 px-4 max-h-2 bg-green-200 font-bold border border-[#e2e2e2] placeholder-gray-400">
+                    {requiredBattery}
+                  </td>
+                </tr>
               </table>
+
+              
             </div>
           </div>
         </form>
+        <button onClick={createPDF} type="button">Download</button>
         {/* <img src={img} /> */}
       </div>
     </>

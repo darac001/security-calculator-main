@@ -5,7 +5,7 @@ const FirstRow = () => {
     <tr      
     
   >
-    <td className=" md:w-full py-2 px-4 h-[38px] bg-white border border-[#e2e2e2] placeholder-gray-400">
+    <td className=" md:w-full py-2 px-4 h-[38px] bg-white border border-[#e2e2e2] placeholder-gray-400" colSpan={2}>
       
     </td>
     <td className=" md:w-full py-2 px-4 h-[38px] bg-white border border-[#e2e2e2] placeholder-gray-400">
