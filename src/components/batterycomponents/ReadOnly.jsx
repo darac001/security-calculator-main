@@ -27,38 +27,18 @@ const ReadOnly = ({current,handleEditClick,handleDelete}) => {
       <td className=" md:w-full py-2 px-4 h-[38px] bg-white border border-[#e2e2e2] placeholder-gray-400">
         {current.totalAlarm}
       </td>
-      <td className="text-left pl-2">
-      {/* <button
-          type="button"
-          className="text-blue-500 flex py-1 px-2 rounded-lg items-center "
-          onClick={(e) => handleEditClick(e, current)}
-        >
-          <FaRegEdit className="text-lg mr-1"/>
-
-        </button> */}
-
+      <td className="text-left flex pl-2">
         <div className="tooltip flex flex-col p-1">          
         <button 
         type="button"
-        className="text-lg items-center text-blue-500 "
+        className="text-lg items-center text-gray-600 "
         onClick={(e) => handleEditClick(e, current)}
-
         >
           <FaRegEdit/>
           </button>
             <span className="tooltiptext block">Edit</span>          
         </div>
 
-
-
-
-        {/* <button
-        type="button"
-        className="text-red-500 flex py-1 px-2 rounded-lg items-center "
-        onClick={()=>handleDelete(current.id)}>
-          <FaMinusCircle className="text-lg mr-1"/>
-          
-        </button> */}
 
         <div className="tooltip flex flex-col p-1">          
         <button 

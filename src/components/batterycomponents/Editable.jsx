@@ -81,7 +81,7 @@ const Editable = ({editData, handleEditInputChange,cancelEdit}) => {
 
 
 
-      <td className="text-left pl-2">
+      <td className="text-left flex pl-2">
 
         <div className="tooltip flex flex-col p-1">          
         <button 

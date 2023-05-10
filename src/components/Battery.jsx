@@ -6,7 +6,11 @@ import ReadOnly from "./batterycomponents/ReadOnly";
 import Editable from "./batterycomponents/Editable";
 import FirstRow from "./batterycomponents/FirstRow";
 import { jsPDF } from "jspdf";
-import 'jspdf-autotable'
+import "jspdf-autotable";
+// const XLSX = require('sheetjs-style');
+
+
+
 
 const Battery = () => {
   const [currents, setCurrents] = useState([
@@ -47,12 +51,12 @@ const Battery = () => {
   const [autonomyAlarm, setAutonomyAlarm] = useState(0.5);
   const [ahStandby, setAhStandby] = useState(0);
   const [ahAlarm, setAhAlarm] = useState(0);
-  const [contingency,setContingency]=useState(20)
-  const [totalAh,setTotalAh]=useState(0)
-
+  const [contingency, setContingency] = useState(20);
+  const [totalAh, setTotalAh] = useState(0);
+  const [projectName, setProjectName] = useState("");
   const [editCurrentId, setEditCurrentId] = useState(null);
 
-  const[requiredBattery,setRequiredBattery]=useState(0)
+  const [requiredBattery, setRequiredBattery] = useState(0);
 
   let totalStandbySum = currents.reduce((total, current) => {
     return (Number(total) + Number(current.totalStandby)).toFixed(2);
@@ -66,7 +70,6 @@ const Battery = () => {
   });
   // console.log(filteredCurrents);
   // console.log(currents);
-  
 
   useEffect(() => {
     // console.log(totalStandbySum);
@@ -80,23 +83,35 @@ const Battery = () => {
       1000
     ).toFixed(2);
 
-  // add 20% contingency to the total
-    let total = ((1 + Number(contingency)/100)*(Number(ahStandby)+Number(ahAlarm))).toFixed(2)
+    // add 20% contingency to the total
+    let total = (
+      (1 + Number(contingency) / 100) *
+      (Number(ahStandby) + Number(ahAlarm))
+    ).toFixed(2);
 
-    let battery = Math.ceil(total)
+    let battery = Math.ceil(total);
     // console.log(ahStandbyCalc);
     setSumOfStandby(totalStandbySum);
     setSumOfAlarm(totalAlarmSum);
     setAhStandby(ahStandbyCalc);
     setAhAlarm(ahAlarmCalc);
-    setTotalAh(total)
-    setRequiredBattery(battery)
-  }, [currents, sumOfStandby, autonomyStandby, sumOfAlarm, autonomyAlarm,ahStandby,ahAlarm,contingency]);
+    setTotalAh(total);
+    setRequiredBattery(battery);
+  }, [
+    currents,
+    sumOfStandby,
+    autonomyStandby,
+    sumOfAlarm,
+    autonomyAlarm,
+    ahStandby,
+    ahAlarm,
+    contingency,
+  ]);
 
   const title = "BATTERY SIZE CALCULATOR";
-  const para1 = " Determines size of the battery to meet specific required hours of autonomy based on the load.";
-  const para2 =
-    " Enter your values in the calculator below!";
+  const para1 =
+    " Determines size of the battery to meet specific required hours of autonomy based on the load.";
+  const para2 = " Enter your values in the calculator below!";
 
   function handleAddNewDevice(e) {
     e.preventDefault();
@@ -153,15 +168,14 @@ const Battery = () => {
     setEditData({ ...editData, [name]: value });
   };
 
-
-  const handleDelete=(currentId)=>{
-    const newerCurrents=[...currents]
-    const indexOfDelete= currents.findIndex(
+  const handleDelete = (currentId) => {
+    const newerCurrents = [...currents];
+    const indexOfDelete = currents.findIndex(
       (current) => current.id === currentId
     );
-    newerCurrents.splice(indexOfDelete,1)
-    setCurrents(newerCurrents)
-  }
+    newerCurrents.splice(indexOfDelete, 1);
+    setCurrents(newerCurrents);
+  };
 
   const handleEditSubmit = (e) => {
     e.preventDefault();
@@ -184,87 +198,128 @@ const Battery = () => {
     setEditCurrentId(null);
   };
 
-  const cancelEdit=()=>{
-    setEditCurrentId(null)
+  const cancelEdit = () => {
+    setEditCurrentId(null);
+  };
+
+  // *******************************************************
+  //  pdf export
+
+  const createPDF = () => {
+    const doc = new jsPDF();
+    doc.text(`Project Name: ${projectName}`, 14, 16);
+    doc.autoTable({
+      margin: { top: 30 },
+      html: "#my-table",
+      theme: "striped",
+      columnStyles: {
+        0: {
+          columnWidth: 10,
+        },
+        1: {
+          columnWidth: 10,
+        },
+        2: {
+          columnWidth: 30,
+        },
+        3: {
+          columnWidth: 30,
+        },
+        4: {
+          columnWidth: 30,
+        },
+        5: {
+          columnWidth: 30,
+        },
+        6: {
+          columnWidth: 30,
+        },
+      },
+
+      styles: {
+        cellPadding: 1,
+        fontSize: 8,
+        lineColor: [44, 62, 80],
+        lineWidth: 0.1,
+      },
+
+      headStyles: {
+        valign: "middle",
+        halign: "left",
+        fillColor: [220, 220, 220],
+        textColor: [0, 0, 0],
+      },
+      bodyStyles: { valign: "middle", halign: "left", cellWidth: "50" },
+    });
+    doc.autoTable({
+      columnStyles: {
+        0: {
+          columnWidth: 5,
+        },
+        1: {
+          columnWidth: 5,
+        },
+        2: {
+          columnWidth: 15,
+        },
+      },
+      html: "#my-table2",
+      theme: "striped",
+      tableWidth: 60,
+      styles: {
+        cellPadding: 1,
+        fontSize: 8,
+        lineColor: [44, 62, 80],
+        lineWidth: 0.1,
+      },
+
+      headStyles: {
+        valign: "middle",
+        halign: "center",
+        fillColor: [220, 220, 220],
+        textColor: [0, 0, 0],
+      },
+      bodyStyles: { valign: "middle", halign: "left", cellWidth: "30" },
+    });
+    if (projectName) {
+      doc.save(`${projectName}.pdf`);
+    } else {
+      doc.save("project.pdf");
+    }
+  };
+
+  // *******************************************************
+  // excel export
+
+  const createExcel = () => {
+    const new_workbook = XLSX.utils.book_new();
+    let tbl1 = document.getElementById("my-table");
+    let tbl2 = document.getElementById("my-table2");
+
+    let worksheet_tmp1 = XLSX.utils.table_to_sheet(tbl1);
+    let worksheet_tmp2 = XLSX.utils.table_to_sheet(tbl2);
+
+    let a = XLSX.utils.sheet_to_json(worksheet_tmp1, { header: 1 });
+    let b = XLSX.utils.sheet_to_json(worksheet_tmp2, { header: 1 });
+
+    a = a.concat("").concat(b);
+
+    let worksheet = XLSX.utils.json_to_sheet(a, { skipHeader: true });
+    worksheet['A1'].s = {
+      fill:{
+        patternType:"solid",
+        fgColor:{ rgb: "#dce6f1" },
+        bgColor:{ rgb: "#dce6f1" } 
+    }
   }
 
-  
-  // pdfprinter
-  // const createPDF = async () => {
-  //   const pdf = new jsPDF("landscape", "pt", "a4");
-  //   const data = await document.querySelector("#pdf");
-  //   pdf.html(data).then(() => {
-  //     pdf.save("shipping_label.pdf");
-  //   });
-    
-  // };
-  const createPDF=()=>{
-    const doc = new jsPDF()
-  doc.autoTable({ 
-    margin: {top: 20},
-    html: '#my-table',
-    theme: 'striped',
-    columnStyles: {
-      0: {
-          columnWidth: 10
-      },
-      1: {
-          columnWidth: 10
-      },
-      2: {
-          columnWidth: 30
-      },
-      3: {
-          columnWidth: 30
-      },
-      4: {
-          columnWidth: 30
-      },
-      5: {
-          columnWidth: 30
-      },
-      6: {
-          columnWidth: 30
-      },
-
-  },
-   
-    styles: { cellPadding: 1, fontSize: 8, lineColor: [44, 62, 80],lineWidth: 0.1, },
-    
-    headStyles:{ valign: 'middle',halign:'left',fillColor: [220,220,220],textColor: [0,0,0]},
-    bodyStyles: { valign: 'middle',halign:'left',cellWidth:'50' },
-   })
-  doc.autoTable({ 
-    columnStyles: {
-      0: {
-          columnWidth: 5
-      },
-      1: {
-          columnWidth: 5
-      },
-      2: {
-          columnWidth: 15
-      },
-
-
-  },
-    html: '#my-table2',
-    theme: 'striped',
-  tableWidth:60,
-    styles: { cellPadding: 1, fontSize: 8, lineColor: [44, 62, 80],lineWidth: 0.1, },
-    
-    headStyles:{ valign: 'middle',halign:'center',fillColor: [220,220,220],textColor: [0,0,0]},
-    bodyStyles: { valign: 'middle',halign:'left',cellWidth:'30' },
-   })
-
-    doc.save('table.pdf')
-
-
-  
-    
-
-
-  }
+    XLSX.utils.book_append_sheet(new_workbook, worksheet, "worksheet");
+    if (projectName) {
+      XLSX.writeFile(new_workbook, `${projectName}.xls`);
+    } else {
+      XLSX.writeFile(new_workbook, "project.xls");
+    }
+  };
 
   return (
     <>
@@ -382,7 +437,10 @@ const Battery = () => {
         {/* <div className="text-s font-bold text-white p-2 text-center bg-[#29abe0]">TOTALS</div> */}
         {/* <hr className="mb-4"/> */}
         <form onSubmit={handleEditSubmit}>
-          <table id="my-table"  className="w-full text-sm text-left text-gray-800 table-fixed">
+          <table
+            id="my-table"
+            className="w-full text-sm text-left text-gray-800 table-auto"
+          >
             <thead className="text-xs text-gray-700 bg-gray-50  ">
               <tr className="px-6 py-3 text-center text-white  bg-[#29abe0] h-">
                 <th
@@ -486,8 +544,20 @@ const Battery = () => {
             <br />
           </div>
           <div>
+            <input
+              type="text"
+              id="name"
+              name="projectName"
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              placeholder="Project Name"
+              className=" md:w-[326px] mb-2 py-2 px-4 border border-[#e2e2e2] placeholder-gray-400 "
+            />
             <div className="grid grid-cols-5">
-              <table id="my-table2"  className="w-full text-xs text-gray-800 bg-gray-50  table-fixed col-span-2">
+              <table
+                id="my-table2"
+                className="w-full text-xs text-gray-800 bg-gray-50  table-fixed col-span-2"
+              >
                 <tr className="px-6 py-3 text-center text-white  bg-[#29abe0] ">
                   <th
                     scope="col"
@@ -540,31 +610,31 @@ const Battery = () => {
                       required
                       placeholder="Enter number of hours"
                       className=" w-full py-1 px-4 border border-[#c7c4c4] placeholder-gray-400  "
-                      />
+                    />
                   </td>
-                      </tr>
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left border border-[#e2e2e2]"
-                      colSpan={2}
-                    >
-                      CONTINGENCY FACTOR (%)
-                    </th>
-                    <td className="bg-white border p-1 border-[#e2e2e2] placeholder-gray-400">
-                      <input
-                        type="number"
-                        min="0"
-                        id="contingency"
-                        name="autonomyAlarm"
-                        value={contingency}
-                        onChange={(e) => setContingency(e.target.value)}
-                        required
-                        placeholder="Enter number of hours"
-                        className=" w-full py-1 px-4 border border-[#c7c4c4] placeholder-gray-400  "
-                      />
-                    </td>
-                  </tr>
+                </tr>
+                <tr>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left border border-[#e2e2e2]"
+                    colSpan={2}
+                  >
+                    CONTINGENCY FACTOR (%)
+                  </th>
+                  <td className="bg-white border p-1 border-[#e2e2e2] placeholder-gray-400">
+                    <input
+                      type="number"
+                      min="0"
+                      id="contingency"
+                      name="autonomyAlarm"
+                      value={contingency}
+                      onChange={(e) => setContingency(e.target.value)}
+                      required
+                      placeholder="Enter number of hours"
+                      className=" w-full py-1 px-4 border border-[#c7c4c4] placeholder-gray-400  "
+                    />
+                  </td>
+                </tr>
                 <tr>
                   <th
                     scope="col"
@@ -638,12 +708,25 @@ const Battery = () => {
                   </td>
                 </tr>
               </table>
-
-              
             </div>
           </div>
         </form>
-        <button onClick={createPDF} type="button">Download</button>
+        <div className="flex gap-2">
+          <button
+            onClick={createPDF}
+            type="button"
+            className="w-[100px] text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
+          >
+            PDF
+          </button>
+          <button
+            onClick={createExcel}
+            type="button"
+            className="w-[100px] text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
+          >
+            Excel
+          </button>
+        </div>
         {/* <img src={img} /> */}
       </div>
     </>
