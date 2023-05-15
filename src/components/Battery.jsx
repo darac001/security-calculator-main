@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Header from "./Header";
 import img from "../assets/Group2.svg";
 import { useState } from "react";
@@ -7,10 +7,7 @@ import Editable from "./batterycomponents/Editable";
 import FirstRow from "./batterycomponents/FirstRow";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-// const XLSX = require('sheetjs-style');
-
-
-
+import XLSX from "xlsx-js-style";
 
 const Battery = () => {
   const [currents, setCurrents] = useState([
@@ -305,19 +302,29 @@ const Battery = () => {
     a = a.concat("").concat(b);
 
     let worksheet = XLSX.utils.json_to_sheet(a, { skipHeader: true });
-    worksheet['A1'].s = {
-      fill:{
-        patternType:"solid",
-        fgColor:{ rgb: "#dce6f1" },
-        bgColor:{ rgb: "#dce6f1" } 
-    }
-  }
+    worksheet["!cols"] = [
+      { width: 30 },
+      { width: 20 },
+      { width: 20 },
+      { width: 20 },
+      { width: 20 },
+      { width: 20 },
+    ];
+    worksheet["!rows"] = [
+      { hpt: 30 },
+      { hpt: 20 },
+      { hpt: 20 },
+      { hpt: 20 },
+      { hpt: 20 },
+      { hpt: 20 },
+    ];
+    // worksheet["!cols"] = [{ s: { font: { bold: true, color: { rgb: "AA4A44" } } } }];
 
     XLSX.utils.book_append_sheet(new_workbook, worksheet, "worksheet");
     if (projectName) {
-      XLSX.writeFile(new_workbook, `${projectName}.xls`);
+      XLSX.writeFile(new_workbook, `${projectName}.xlsx`);
     } else {
-      XLSX.writeFile(new_workbook, "project.xls");
+      XLSX.writeFile(new_workbook, "project.xlsx");
     }
   };
 
@@ -439,7 +446,7 @@ const Battery = () => {
         <form onSubmit={handleEditSubmit}>
           <table
             id="my-table"
-            className="w-full text-sm text-left text-gray-800 table-auto"
+            className="w-full text-sm text-left text-gray-800 table-fixed"
           >
             <thead className="text-xs text-gray-700 bg-gray-50  ">
               <tr className="px-6 py-3 text-center text-white  bg-[#29abe0] h-">
@@ -544,6 +551,8 @@ const Battery = () => {
             <br />
           </div>
           <div>
+            <div className="flex gap-5">
+              <div>
             <input
               type="text"
               id="name"
@@ -551,163 +560,273 @@ const Battery = () => {
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
               placeholder="Project Name"
-              className=" md:w-[326px] mb-2 py-2 px-4 border border-[#e2e2e2] placeholder-gray-400 "
+              className=" md:w-1/2 mb-2 py-2 px-4 border border-[#e2e2e2] placeholder-gray-400 "
             />
-            <div className="grid grid-cols-5">
-              <table
-                id="my-table2"
-                className="w-full text-xs text-gray-800 bg-gray-50  table-fixed col-span-2"
-              >
-                <tr className="px-6 py-3 text-center text-white  bg-[#29abe0] ">
-                  <th
-                    scope="col"
-                    colSpan={3}
-                    className="px-6 py-2 text-lg text-center h-2"
-                  >
-                    SUMMARY
-                  </th>
-                </tr>
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left border border-[#e2e2e2]"
-                    colSpan={2}
-                  >
-                    REQUIRED STANDBY (H)
-                  </th>
-                  <td className="bg-white border p-1 border-[#e2e2e2] placeholder-gray-400">
-                    <input
-                      type="number"
-                      min="0"
-                      step={0.1}
-                      id="autonomyStandby"
-                      name="autonomyStandby"
-                      value={autonomyStandby}
-                      onChange={(e) => setAutonomyStandby(e.target.value)}
-                      required
-                      placeholder="Enter number of hours"
-                      className=" w-full py-1 px-4 border border-[#c7c4c4] placeholder-gray-400  "
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left border border-[#e2e2e2]"
-                    colSpan={2}
-                  >
-                    REQUIRED ALARM (H)
-                  </th>
-                  <td className="bg-white border p-1 border-[#e2e2e2] placeholder-gray-400">
-                    <input
-                      type="number"
-                      min="0"
-                      step={0.1}
-                      id="autonomyAlarm"
-                      name="autonomyAlarm"
-                      value={autonomyAlarm}
-                      onChange={(e) => setAutonomyAlarm(e.target.value)}
-                      required
-                      placeholder="Enter number of hours"
-                      className=" w-full py-1 px-4 border border-[#c7c4c4] placeholder-gray-400  "
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left border border-[#e2e2e2]"
-                    colSpan={2}
-                  >
-                    CONTINGENCY FACTOR (%)
-                  </th>
-                  <td className="bg-white border p-1 border-[#e2e2e2] placeholder-gray-400">
-                    <input
-                      type="number"
-                      min="0"
-                      id="contingency"
-                      name="autonomyAlarm"
-                      value={contingency}
-                      onChange={(e) => setContingency(e.target.value)}
-                      required
-                      placeholder="Enter number of hours"
-                      className=" w-full py-1 px-4 border border-[#c7c4c4] placeholder-gray-400  "
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
-                    colSpan={2}
-                  >
-                    TOTAL STANDBY (mA)
-                  </th>
-                  <td className=" py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
-                    {sumOfStandby}
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
-                    colSpan={2}
-                  >
-                    TOTAL ALARM (mA)
-                  </th>
-                  <td className=" md:w-full py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
-                    {sumOfAlarm}
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
-                    colSpan={2}
-                  >
-                    TOTAL STANDBY (AH)
-                  </th>
-                  <td className=" md:w-full py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
-                    {ahStandby}
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
-                    colSpan={2}
-                  >
-                    TOTAL ALARM (AH)
-                  </th>
-                  <td className=" md:w-full py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
-                    {ahAlarm}
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
-                    colSpan={2}
-                  >
-                    TOTAL (AH)
-                  </th>
-                  <td className=" md:w-full py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
-                    {totalAh}
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
-                    colSpan={2}
-                  >
-                    REQUIRED BATTERY (AH)
-                  </th>
-                  <td className=" md:w-full py-2 px-4 max-h-2 bg-green-200 font-bold border border-[#e2e2e2] placeholder-gray-400">
-                    {requiredBattery}
-                  </td>
-                </tr>
+                <table
+                  id="my-table2"
+                  className="w-full text-xs text-gray-800 bg-gray-50  table-fixed"
+                >
+                  <tr className="px-6 py-3 text-center text-white  bg-[#29abe0] ">
+                    <th
+                      scope="col"
+                      colSpan={3}
+                      className="px-6 py-2 text-lg text-center h-2"
+                    >
+                      SUMMARY
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      REQUIRED STANDBY (H)
+                    </th>
+                    <td className=" py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
+                      {autonomyStandby}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      REQUIRED ALARM (H)
+                    </th>
+                    <td className=" py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
+                      {autonomyAlarm}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      CONTINGENCY FACTOR (%)
+                    </th>
+                    <td className=" py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
+                      {contingency}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      TOTAL STANDBY (mA)
+                    </th>
+                    <td className=" py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
+                      {sumOfStandby}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      TOTAL ALARM (mA)
+                    </th>
+                    <td className=" md:w-full py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
+                      {sumOfAlarm}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      TOTAL STANDBY (AH)
+                    </th>
+                    <td className=" md:w-full py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
+                      {ahStandby}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      TOTAL ALARM (AH)
+                    </th>
+                    <td className=" md:w-full py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
+                      {ahAlarm}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      TOTAL (AH)
+                    </th>
+                    <td className=" md:w-full py-2 px-4 max-h-2 bg-white border border-[#e2e2e2] placeholder-gray-400">
+                      {totalAh}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      REQUIRED BATTERY (AH)
+                    </th>
+                    <td className=" md:w-full py-2 px-4 max-h-2 bg-green-200 font-bold border border-[#e2e2e2] placeholder-gray-400">
+                      {requiredBattery}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <div className="flex flex-col items-end pr-28">
+              <p        
+              className="px-6 py-3 text-left text-[16px] font-bold"
+            > ENTER THE VALUES:</p>
+                <table
+                  id="my-table3"
+                  className="w-2/3 text-xs text-gray-800 bg-gray-50  table-fixed"
+                >
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      REQUIRED STANDBY (H)
+                    </th>
+                    <td className="bg-white border p-1 border-[#e2e2e2] placeholder-gray-400">
+                      <input
+                        type="number"
+                        min="0"
+                        step={0.1}
+                        id="autonomyStandby"
+                        name="autonomyStandby"
+                        value={autonomyStandby}
+                        onChange={(e) => setAutonomyStandby(e.target.value)}
+                        required
+                        placeholder="Enter number of hours"
+                        className=" w-full py-1 px-4 border border-[#c7c4c4] placeholder-gray-400  "
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      REQUIRED ALARM (H)
+                    </th>
+                    <td className="bg-white border p-1 border-[#e2e2e2] placeholder-gray-400">
+                      <input
+                        type="number"
+                        min="0"
+                        step={0.1}
+                        id="autonomyAlarm"
+                        name="autonomyAlarm"
+                        value={autonomyAlarm}
+                        onChange={(e) => setAutonomyAlarm(e.target.value)}
+                        required
+                        placeholder="Enter number of hours"
+                        className=" w-full py-1 px-4 border border-[#c7c4c4] placeholder-gray-400  "
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left border border-[#e2e2e2]"
+                      colSpan={2}
+                    >
+                      CONTINGENCY FACTOR (%)
+                    </th>
+                    <td className="bg-white border p-1 border-[#e2e2e2] placeholder-gray-400">
+                      <input
+                        type="number"
+                        min="0"
+                        id="contingency"
+                        name="autonomyAlarm"
+                        value={contingency}
+                        onChange={(e) => setContingency(e.target.value)}
+                        required
+                        placeholder="Enter number of hours"
+                        className=" w-full py-1 px-4 border border-[#c7c4c4] placeholder-gray-400  "
+                      />
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              {/* <div>
+
+             
+              <table className="w-1/2 text-sm text-left text-gray-800 ">
+                <thead className="text-xs text-gray-700 bg-gray-50 ">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 ">
+                      STANDBY(H)
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      ALARM(H)
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      CONTINGENCY(%)
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={addNewData.name}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="e.g. Glassbreak"
+                        className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400 "
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        id="quantity"
+                        name="quantity"
+                        value={addNewData.quantity}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="0"
+                        className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        step={1}
+                        id="standby"
+                        name="standby"
+                        value={addNewData.standby}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="0"
+                        className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+                      />
+                    </td>
+                  </tr>
+                </tbody>
               </table>
+              </div> */}
             </div>
           </div>
         </form>
