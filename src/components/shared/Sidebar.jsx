@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Link, useLocation } from "react-router-dom";
 import  Logac from '../../assets/Logac2.svg'
 
-import { DASHBOARD_SIDEBAR_LINKS,DASHBOARD_SIDEBAR_BOTTOM_LINKS } from "../../constants/navigation"
+import { DASHBOARD_SIDEBAR_LINKS} from "../../constants/navigation"
 import {HiOutlineLogout} from 'react-icons/hi'
 
 const linkClass =
@@ -11,7 +11,7 @@ const linkClass =
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col bg-neutral-900 md:min-w-[300px] text-white ">
+    <div className="flex flex-col bg-neutral-900 md:min-w-[270px] text-white ">
       <div className="flex items-left justify-left my-6 pl-2">
         <img className="w-[220px] " src={Logac} alt="" />
       </div>
@@ -22,7 +22,7 @@ const Sidebar = () => {
           return <SidebarLink key={link.key} link={link} />;
         })}
       </div>
-      <div className="flex flex-col gap-0.5 pt-2 border-t border-neutral-700">
+      {/* <div className="flex flex-col gap-0.5 pt-2 border-t border-neutral-700">
 				{DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((link) => (
 					<SidebarLink key={link.key} link={link} />
 				))}
@@ -32,7 +32,7 @@ const Sidebar = () => {
 					</span>
 					Logout
 				</div>
-			</div>
+			</div> */}
     </div>
   );
 };
