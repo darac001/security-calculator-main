@@ -13,12 +13,13 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<VoltageDrop />} />
+        <Route path="voltagedrop" element={<VoltageDrop />} />
+          
 
           <Route path="wire" element={<WireSize />} />
         </Route>
         <Route path="/" element={<Layout2 />}>
-          <Route path="battery" element={<Battery />} />
+        <Route index element={<Battery/>} />
         </Route>
       </Routes>
     </Router>

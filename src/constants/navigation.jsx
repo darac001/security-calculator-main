@@ -17,13 +17,13 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 	{
 		key: '2',
 		label: 'Battery',
-		path: '/battery',
+		path: '/',
 		icon: <BatteryIcon/>
 	},
 	{
 		key: '1',
 		label: 'Voltage Drop',
-		path: '/',
+		path: '/voltagedrop',
 		icon: <DCVoltageIcon/>
 	},
 
