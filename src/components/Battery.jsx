@@ -10,7 +10,11 @@ import "jspdf-autotable";
 import XLSX from "xlsx-js-style";
 
 const Battery = () => {
-  const [currents, setCurrents] = useState([
+
+  const items = JSON.parse(localStorage.getItem('my-key'));
+
+  // const [currents, setCurrents] = useState(items);
+  const [currents, setCurrents] = useState(items?items :[
     {
       id: 1,
       name: "",
@@ -21,6 +25,8 @@ const Battery = () => {
       totalAlarm: "",
     },
   ]);
+
+
 
   const [addNewData, setAddNewData] = useState({
     id: "",
@@ -67,7 +73,11 @@ const Battery = () => {
   });
   // console.log(filteredCurrents);
   // console.log(currents);
-
+useEffect(()=>{
+  if(items){
+    setCurrentAdded(true);
+  }
+},[])
   useEffect(() => {
     // console.log(totalStandbySum);
     // console.log(totalAlarmSum);
@@ -94,6 +104,8 @@ const Battery = () => {
     setAhAlarm(ahAlarmCalc);
     setTotalAh(total);
     setRequiredBattery(battery);
+
+    localStorage.setItem('my-key', JSON.stringify(currents));
   }, [
     currents,
     sumOfStandby,
