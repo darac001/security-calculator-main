@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { Link, useLocation } from "react-router-dom";
-import  Logac from '../../assets/LOGAC.svg'
+import  Logac from '../../assets/Logac2.svg'
 
 import { DASHBOARD_SIDEBAR_LINKS,DASHBOARD_SIDEBAR_BOTTOM_LINKS } from "../../constants/navigation"
 import {HiOutlineLogout} from 'react-icons/hi'
