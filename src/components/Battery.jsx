@@ -235,9 +235,10 @@ const Battery = () => {
     e.preventDefault();
     const { name, value } = e.target;
     // console.log(e.target.value);
-    // const data = SWH.filter(function(d){
-    //   return d.name===e.target.value
-    // })
+    const data = PRODUCTS[`${manuf}`].filter(function(d){
+      return d.name===e.target.value
+    })
+
     // console.log(data);
     // console.log(data[0].standby);
     addNewData2.standby = data[0].standby;

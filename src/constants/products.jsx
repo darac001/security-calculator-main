@@ -9,8 +9,8 @@ export const PRODUCTS={
 	"--Select--":[
 		{
 			key: '1',
-			mfg:'None',
-			name: '',
+			mfg:'--Select--',
+			name: '--',
 			standby: 0,
 			alarm: 0,		
 		},
