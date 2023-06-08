@@ -229,6 +229,7 @@ const Battery = () => {
     const { name, value } = e.target;
     console.log(e.target.value);
     setManuf(e.target.value);
+    setAddNewData2({ ...addNewData2, [name]: value });
   };
 
   const handleProductChange = (e) => {
@@ -243,7 +244,7 @@ const Battery = () => {
     // console.log(data[0].standby);
     addNewData2.standby = data[0].standby;
     addNewData2.alarm = data[0].alarm;
-    setAddNewData2({ ...addNewData2, [name]: value });
+    setAddNewData2({ ...addNewData2, [name]: value,  });
   };
   const handleProductQtyChange = (e) => {
     e.preventDefault();

@@ -8,14 +8,13 @@ export const MANUFACTURERS=[
 export const PRODUCTS={
 	"--Select--":[
 		{
-			key: '1',
-			mfg:'--Select--',
-			name: '--',
-			standby: 0,
-			alarm: 0,		
+				
 		},
 	],
 	"SoftwareHouse" : [
+		{
+
+		},
 		{
 			key: '1',
 			mfg:'SWH',
@@ -89,6 +88,9 @@ export const PRODUCTS={
 		
 	  ],
 	  "HID": [
+		{
+
+		},
 		{
 			key: '1',
 			mfg:'HID',
