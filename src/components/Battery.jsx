@@ -8,27 +8,40 @@ import FirstRow from "./batterycomponents/FirstRow";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import XLSX from "xlsx-js-style";
+import { SWH, HID, MANUFACTURERS, PRODUCTS } from "../constants/products";
 
 const Battery = () => {
+  const items = JSON.parse(localStorage.getItem("my-key"));
 
-  const items = JSON.parse(localStorage.getItem('my-key'));
+  const [manuf, setManuf] = useState('--Select--');
 
   // const [currents, setCurrents] = useState(items);
-  const [currents, setCurrents] = useState(items?items :[
-    {
-      id: 1,
-      name: "",
-      quantity: "",
-      standby: "",
-      totalStandby: "",
-      alarm: "",
-      totalAlarm: "",
-    },
-  ]);
-
-
+  const [currents, setCurrents] = useState(
+    items
+      ? items
+      : [
+          {
+            id: 1,
+            name: "",
+            quantity: "",
+            standby: "",
+            totalStandby: "",
+            alarm: "",
+            totalAlarm: "",
+          },
+        ]
+  );
 
   const [addNewData, setAddNewData] = useState({
+    id: "",
+    name: "",
+    quantity: "",
+    standby: "",
+    totalStandby: "",
+    alarm: "",
+    totalAlarm: "",
+  });
+  const [addNewData2, setAddNewData2] = useState({
     id: "",
     name: "",
     quantity: "",
@@ -73,11 +86,11 @@ const Battery = () => {
   });
   // console.log(filteredCurrents);
   // console.log(currents);
-useEffect(()=>{
-  if(items){
-    setCurrentAdded(true);
-  }
-},[])
+  useEffect(() => {
+    if (items) {
+      setCurrentAdded(true);
+    }
+  }, []);
   useEffect(() => {
     // console.log(totalStandbySum);
     // console.log(totalAlarmSum);
@@ -105,7 +118,7 @@ useEffect(()=>{
     setTotalAh(total);
     setRequiredBattery(battery);
 
-    localStorage.setItem('my-key', JSON.stringify(currents));
+    localStorage.setItem("my-key", JSON.stringify(currents));
   }, [
     currents,
     sumOfStandby,
@@ -210,6 +223,58 @@ useEffect(()=>{
   const cancelEdit = () => {
     setEditCurrentId(null);
   };
+
+  const handleMfgChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    console.log(e.target.value);
+    setManuf(e.target.value);
+  };
+
+  const handleProductChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    // console.log(e.target.value);
+    // const data = SWH.filter(function(d){
+    //   return d.name===e.target.value
+    // })
+    // console.log(data);
+    // console.log(data[0].standby);
+    addNewData2.standby = data[0].standby;
+    addNewData2.alarm = data[0].alarm;
+    setAddNewData2({ ...addNewData2, [name]: value });
+  };
+  const handleProductQtyChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setAddNewData2({ ...addNewData2, [name]: value });
+  };
+  function handleAddNewDevice2(e) {
+    e.preventDefault();
+    const newDevice = {
+      // using the length of the array for a unique id
+      id: currents.length + 1,
+      name: addNewData2.name,
+      quantity: addNewData2.quantity,
+      standby: addNewData2.standby,
+      totalStandby: (addNewData2.quantity * addNewData2.standby).toFixed(2),
+      alarm: addNewData2.alarm,
+      totalAlarm: (addNewData2.quantity * addNewData2.alarm).toFixed(2),
+    };
+    const newCurrents = [...currents, newDevice];
+
+    setCurrents(newCurrents);
+    setCurrentAdded(true);
+    setAddNewData({
+      id: "",
+      name: "",
+      quantity: "",
+      standby: "",
+      totalStandby: "",
+      alarm: "",
+      totalAlarm: "",
+    });
+  }
 
   // *******************************************************
   //  pdf export
@@ -345,19 +410,10 @@ useEffect(()=>{
       <div className="md:p-5 col-span-2 ">
         <Header title={title} para1={para1} para2={para2} />
         <div className="flex flex-col justify-center items-center">
-          <form className="flex flex-col gap-3 " onSubmit={handleAddNewDevice}>
+          <form className="flex flex-col gap-3 min-w-full" onSubmit={handleAddNewDevice}>
             <div>
-              <table className="w-full text-sm text-left text-gray-800 ">
+              <table className=" text-sm text-left text-gray-800 ">
                 <thead className="text-xs text-gray-700 bg-gray-50 ">
-                  {/* <tr>
-                    <th scope="col" className="px-6 py-3" colSpan={2}></th>
-                    <th scope="col" className="px-6 py-3" colSpan={2}>
-                      STANDBY CURRENT
-                    </th>
-                    <th scope="col" className="px-6 py-3" colSpan={2}>
-                      ALARM CURRENT
-                    </th>
-                  </tr> */}
                   <tr>
                     <th scope="col" className="px-6 py-3 ">
                       DESCRIPTION
@@ -433,6 +489,88 @@ useEffect(()=>{
                         name="alarm"
                         value={addNewData.alarm}
                         onChange={handleInputChange}
+                        required
+                        placeholder="0"
+                        className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button
+              className="w-full text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
+              type="submit"
+            >
+              Add to Calculator
+            </button>
+          </form>
+
+          <form className="flex flex-col gap-3 min-w-full " onSubmit={handleAddNewDevice2}>
+            <div>
+              <table className=" text-sm text-left text-gray-800 ">
+                <thead className="text-xs text-gray-700 bg-gray-50 ">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 ">
+                      MANUFACTURER
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      MODEL NM.
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      QTY.
+                    </th>
+                    {/* <th scope="col" className="px-6 py-3">
+                      TOTAL mA
+                    </th> */}
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <select
+                        className="md:w-[200px] py-3 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
+                        type="text"
+                        id="mfg"
+                        name="mfg"
+                        value={manuf}
+                        onChange={handleMfgChange}
+                        required
+                      >
+                        {/* {SWH.map((prod) => {
+                          return <option>{prod.name}</option>;
+                        })} */}
+                        {MANUFACTURERS.map((mfg) => {
+                          return <option>{mfg}</option>;
+                        })}
+                      </select>
+                    </td>
+                    <td>
+                      <select
+                        className="md:w-[200px] py-3 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={addNewData2.name}
+                        onChange={handleProductChange}
+                        required
+                      >
+                        {PRODUCTS[`${manuf}`].map((prod) => {
+                          return <option>{prod.name}</option>;
+                        })}
+                      </select>
+                        
+                      
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        id="quantity"
+                        name="quantity"
+                        value={addNewData2.quantity}
+                        onChange={handleProductQtyChange}
                         required
                         placeholder="0"
                         className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
@@ -565,15 +703,15 @@ useEffect(()=>{
           <div>
             <div className="flex gap-5">
               <div>
-            <input
-              type="text"
-              id="name"
-              name="projectName"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              placeholder="Project Name"
-              className=" md:w-1/2 mb-2 py-2 px-4 border border-[#e2e2e2] placeholder-gray-400 "
-            />
+                <input
+                  type="text"
+                  id="name"
+                  name="projectName"
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  placeholder="Project Name"
+                  className=" md:w-1/2 mb-2 py-2 px-4 border border-[#e2e2e2] placeholder-gray-400 "
+                />
                 <table
                   id="my-table2"
                   className="w-full text-xs text-gray-800 bg-gray-50  table-fixed"
@@ -699,9 +837,10 @@ useEffect(()=>{
               </div>
 
               <div className="flex flex-col items-end pr-28">
-              <p        
-              className="px-6 py-3 text-left text-[16px] font-bold"
-            > ENTER THE VALUES:</p>
+                <p className="px-6 py-3 text-left text-[16px] font-bold">
+                  {" "}
+                  ENTER THE VALUES:
+                </p>
                 <table
                   id="my-table3"
                   className="w-2/3 text-xs text-gray-800 bg-gray-50  table-fixed"
