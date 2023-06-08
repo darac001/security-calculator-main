@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from "react";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css'
 import Header from "./Header";
 import img from "../assets/Group2.svg";
 import { useState } from "react";
@@ -13,7 +15,9 @@ import { SWH, HID, MANUFACTURERS, PRODUCTS } from "../constants/products";
 const Battery = () => {
   const items = JSON.parse(localStorage.getItem("my-key"));
 
-  const [manuf, setManuf] = useState('--Select--');
+  const [date, setDate] = useState(new Date());
+
+  const [manuf, setManuf] = useState("--Select--");
 
   // const [currents, setCurrents] = useState(items);
   const [currents, setCurrents] = useState(
@@ -142,9 +146,9 @@ const Battery = () => {
       id: currents.length + 1,
       name: addNewData.name,
       quantity: addNewData.quantity,
-      standby: addNewData.standby,
+      standby: Number(addNewData.standby).toFixed(2),
       totalStandby: (addNewData.quantity * addNewData.standby).toFixed(2),
-      alarm: addNewData.alarm,
+      alarm: Number(addNewData.alarm).toFixed(2),
       totalAlarm: (addNewData.quantity * addNewData.alarm).toFixed(2),
     };
     const newCurrents = [...currents, newDevice];
@@ -236,15 +240,15 @@ const Battery = () => {
     e.preventDefault();
     const { name, value } = e.target;
     // console.log(e.target.value);
-    const data = PRODUCTS[`${manuf}`].filter(function(d){
-      return d.name===e.target.value
-    })
+    const data = PRODUCTS[`${manuf}`].filter(function (d) {
+      return d.name === e.target.value;
+    });
 
     // console.log(data);
     // console.log(data[0].standby);
     addNewData2.standby = data[0].standby;
     addNewData2.alarm = data[0].alarm;
-    setAddNewData2({ ...addNewData2, [name]: value,  });
+    setAddNewData2({ ...addNewData2, [name]: value });
   };
   const handleProductQtyChange = (e) => {
     e.preventDefault();
@@ -258,9 +262,9 @@ const Battery = () => {
       id: currents.length + 1,
       name: addNewData2.name,
       quantity: addNewData2.quantity,
-      standby: addNewData2.standby,
+      standby: Number(addNewData2.standby).toFixed(2),
       totalStandby: (addNewData2.quantity * addNewData2.standby).toFixed(2),
-      alarm: addNewData2.alarm,
+      alarm: Number(addNewData2.alarm).toFixed(2),
       totalAlarm: (addNewData2.quantity * addNewData2.alarm).toFixed(2),
     };
     const newCurrents = [...currents, newDevice];
@@ -283,7 +287,10 @@ const Battery = () => {
 
   const createPDF = () => {
     const doc = new jsPDF();
+    doc.setFontSize(14);
     doc.text(`Project Name: ${projectName}`, 14, 16);
+    doc.setFontSize(10);
+    doc.text(`Created: ${date.toLocaleDateString()}`, 14, 22);
     doc.autoTable({
       margin: { top: 30 },
       html: "#my-table",
@@ -411,8 +418,104 @@ const Battery = () => {
     <>
       <div className="md:p-5 col-span-2 ">
         <Header title={title} para1={para1} para2={para2} />
+        <p className="py-3 text-left text-[12px] font-bold text-[#29abe0]">
+          CHOOSE FROM THE LIST
+        </p>
+
         <div className="flex flex-col justify-center items-center">
-          <form className="flex flex-col gap-3 min-w-full" onSubmit={handleAddNewDevice}>
+          <form
+            className="flex flex-col gap-3 min-w-full "
+            onSubmit={handleAddNewDevice2}
+          >
+            <div>
+              <table className=" text-sm text-left text-gray-800 ">
+                <thead className="text-xs text-gray-700 bg-gray-50 ">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 ">
+                      MANUFACTURER
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      MODEL NM.
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      QTY.
+                    </th>
+                    {/* <th scope="col" className="px-6 py-3">
+                      TOTAL mA
+                    </th> */}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <select
+                        className="md:w-[200px] py-3 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
+                        type="text"
+                        id="mfg"
+                        name="mfg"
+                        value={manuf}
+                        onChange={handleMfgChange}
+                        required
+                      >
+                        {/* {SWH.map((prod) => {
+                          return <option>{prod.name}</option>;
+                        })} */}
+                        {MANUFACTURERS.map((mfg) => {
+                          return <option>{mfg}</option>;
+                        })}
+                      </select>
+                    </td>
+                    <td>
+                      <select
+                        className="md:w-[200px] py-3 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={addNewData2.name}
+                        onChange={handleProductChange}
+                        required
+                      >
+                        {PRODUCTS[`${manuf}`].map((prod) => {
+                          return <option>{prod.name}</option>;
+                        })}
+                      </select>
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        min="0"
+                        id="quantity"
+                        name="quantity"
+                        value={addNewData2.quantity}
+                        onChange={handleProductQtyChange}
+                        required
+                        placeholder="0"
+                        className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button
+              className="w-full text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
+              type="submit"
+            >
+              Add to Calculator
+            </button>
+          </form>
+        </div>
+
+        <hr className="my-6 w-full" />
+
+        <p className="py-3 mt-10 text-left text-[12px] font-bold text-[#29abe0]">
+          CREATE CUSTOM DEVICE
+        </p>
+        <div className="flex flex-col justify-center items-center">
+          <form
+            className="flex flex-col gap-3 min-w-full"
+            onSubmit={handleAddNewDevice}
+          >
             <div>
               <table className=" text-sm text-left text-gray-800 ">
                 <thead className="text-xs text-gray-700 bg-gray-50 ">
@@ -491,88 +594,6 @@ const Battery = () => {
                         name="alarm"
                         value={addNewData.alarm}
                         onChange={handleInputChange}
-                        required
-                        placeholder="0"
-                        className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <button
-              className="w-full text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
-              type="submit"
-            >
-              Add to Calculator
-            </button>
-          </form>
-
-          <form className="flex flex-col gap-3 min-w-full " onSubmit={handleAddNewDevice2}>
-            <div>
-              <table className=" text-sm text-left text-gray-800 ">
-                <thead className="text-xs text-gray-700 bg-gray-50 ">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 ">
-                      MANUFACTURER
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      MODEL NM.
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      QTY.
-                    </th>
-                    {/* <th scope="col" className="px-6 py-3">
-                      TOTAL mA
-                    </th> */}
-
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <select
-                        className="md:w-[200px] py-3 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
-                        type="text"
-                        id="mfg"
-                        name="mfg"
-                        value={manuf}
-                        onChange={handleMfgChange}
-                        required
-                      >
-                        {/* {SWH.map((prod) => {
-                          return <option>{prod.name}</option>;
-                        })} */}
-                        {MANUFACTURERS.map((mfg) => {
-                          return <option>{mfg}</option>;
-                        })}
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        className="md:w-[200px] py-3 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={addNewData2.name}
-                        onChange={handleProductChange}
-                        required
-                      >
-                        {PRODUCTS[`${manuf}`].map((prod) => {
-                          return <option>{prod.name}</option>;
-                        })}
-                      </select>
-                        
-                      
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        min="0"
-                        id="quantity"
-                        name="quantity"
-                        value={addNewData2.quantity}
-                        onChange={handleProductQtyChange}
                         required
                         placeholder="0"
                         className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
@@ -705,15 +726,20 @@ const Battery = () => {
           <div>
             <div className="flex gap-5">
               <div>
-                <input
-                  type="text"
-                  id="name"
-                  name="projectName"
-                  value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
-                  placeholder="Project Name"
-                  className=" md:w-1/2 mb-2 py-2 px-4 border border-[#e2e2e2] placeholder-gray-400 "
-                />
+                <div className="flex  gap-3">
+                  <input
+                    type="text"
+                    id="name"
+                    name="projectName"
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                    placeholder="Project Name"
+                    className=" md:w-1/2 mb-2 py-2 px-4 border border-[#e2e2e2] placeholder-gray-400 "
+                  />
+                  <div>
+                    <DatePicker onChange={setDate} selected={date}  />
+                  </div>
+                </div>
                 <table
                   id="my-table2"
                   className="w-full text-xs text-gray-800 bg-gray-50  table-fixed"
@@ -730,7 +756,7 @@ const Battery = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left border border-[#e2e2e2]"
+                      className="px-6 py-2 text-left border border-[#e2e2e2]"
                       colSpan={2}
                     >
                       REQUIRED STANDBY (H)
@@ -742,7 +768,7 @@ const Battery = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left border border-[#e2e2e2]"
+                      className="px-6 py-2 text-left border border-[#e2e2e2]"
                       colSpan={2}
                     >
                       REQUIRED ALARM (H)
@@ -754,7 +780,7 @@ const Battery = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left border border-[#e2e2e2]"
+                      className="px-6 py-2 text-left border border-[#e2e2e2]"
                       colSpan={2}
                     >
                       CONTINGENCY FACTOR (%)
@@ -766,7 +792,7 @@ const Battery = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      className="px-6 py-2 text-left h-2 border border-[#e2e2e2]"
                       colSpan={2}
                     >
                       TOTAL STANDBY (mA)
@@ -778,7 +804,7 @@ const Battery = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      className="px-6 py-2 text-left h-2 border border-[#e2e2e2]"
                       colSpan={2}
                     >
                       TOTAL ALARM (mA)
@@ -790,7 +816,7 @@ const Battery = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      className="px-6 py-2 text-left h-2 border border-[#e2e2e2]"
                       colSpan={2}
                     >
                       TOTAL STANDBY (AH)
@@ -802,7 +828,7 @@ const Battery = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      className="px-6 py-2 text-left h-2 border border-[#e2e2e2]"
                       colSpan={2}
                     >
                       TOTAL ALARM (AH)
@@ -814,7 +840,7 @@ const Battery = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      className="px-6 py-2 text-left h-2 border border-[#e2e2e2]"
                       colSpan={2}
                     >
                       TOTAL (AH)
@@ -826,7 +852,7 @@ const Battery = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-6 py-3 text-left h-2 border border-[#e2e2e2]"
+                      className="px-6 py-2 text-left h-2 border border-[#e2e2e2]"
                       colSpan={2}
                     >
                       REQUIRED BATTERY (AH)
