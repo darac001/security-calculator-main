@@ -19,6 +19,16 @@ const Battery = () => {
 
   const [manuf, setManuf] = useState("--Select--");
 
+  const reset=[{
+    id: "",
+    name: "",
+    quantity: "",
+    standby: "",
+    totalStandby: "",
+    alarm: "",
+    totalAlarm: "",
+  }]
+
   // const [currents, setCurrents] = useState(items);
   const [currents, setCurrents] = useState(
     items
@@ -27,7 +37,7 @@ const Battery = () => {
           {
             id: 1,
             name: "",
-            quantity: "",
+            quantity: "1",
             standby: "",
             totalStandby: "",
             alarm: "",
@@ -39,7 +49,7 @@ const Battery = () => {
   const [addNewData, setAddNewData] = useState({
     id: "",
     name: "",
-    quantity: "",
+    quantity: "1",
     standby: "",
     totalStandby: "",
     alarm: "",
@@ -48,7 +58,7 @@ const Battery = () => {
   const [addNewData2, setAddNewData2] = useState({
     id: "",
     name: "",
-    quantity: "",
+    quantity: "1",
     standby: "",
     totalStandby: "",
     alarm: "",
@@ -91,7 +101,8 @@ const Battery = () => {
   // console.log(filteredCurrents);
   // console.log(currents);
   useEffect(() => {
-    if (items) {
+    // console.log(items[1].name);
+    if (items.length>1) {
       setCurrentAdded(true);
     }
   }, []);
@@ -158,13 +169,19 @@ const Battery = () => {
     setAddNewData({
       id: "",
       name: "",
-      quantity: "",
+      quantity: "1",
       standby: "",
       totalStandby: "",
       alarm: "",
       totalAlarm: "",
     });
   }
+
+  const resetCalcs = () => {
+    setCurrents(reset);
+    setCurrentAdded(false)
+    localStorage.setItem("my-key", JSON.stringify(reset));
+  };
 
   const handleInputChange = (e) => {
     e.preventDefault();
@@ -231,7 +248,7 @@ const Battery = () => {
   const handleMfgChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setManuf(e.target.value);
     setAddNewData2({ ...addNewData2, [name]: value });
   };
@@ -274,7 +291,7 @@ const Battery = () => {
     setAddNewData({
       id: "",
       name: "",
-      quantity: "",
+      quantity: "1",
       standby: "",
       totalStandby: "",
       alarm: "",
@@ -486,7 +503,7 @@ const Battery = () => {
                         min="0"
                         id="quantity"
                         name="quantity"
-                        value={addNewData2.quantity}
+                        value={addNewData2.quantity||1}
                         onChange={handleProductQtyChange}
                         required
                         placeholder="0"
@@ -560,7 +577,7 @@ const Battery = () => {
                         min="0"
                         id="quantity"
                         name="quantity"
-                        value={addNewData.quantity}
+                        value={addNewData.quantity||1}
                         onChange={handleInputChange}
                         required
                         placeholder="0"
@@ -718,6 +735,16 @@ const Battery = () => {
               ))}
             </tbody>
           </table>
+          <div className="flex gap-2">
+          {currentAdded&&<button
+            onClick={resetCalcs}
+            type="button"
+            className="w-[100px] text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
+          >
+            RESET
+          </button>}
+
+        </div>
           <div>
             <br />
             <br />
