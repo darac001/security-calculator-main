@@ -436,7 +436,7 @@ const Battery = () => {
       <div className="md:p-5 col-span-2 ">
         <Header title={title} para1={para1} para2={para2} />
         <p className="py-3 text-left text-[12px] font-bold text-[#29abe0]">
-          CHOOSE FROM THE LIST
+          CHOOSE FROM THE LIST (all values are @12VDC)
         </p>
 
         <div className="flex flex-col justify-center items-center">
