@@ -10,7 +10,7 @@ import FirstRow from "./batterycomponents/FirstRow";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import XLSX from "xlsx-js-style";
-import { SWH, HID, MANUFACTURERS, PRODUCTS } from "../constants/products";
+import { MANUFACTURERS, PRODUCTS } from "../constants/products";
 
 const Battery = () => {
   const items = JSON.parse(localStorage.getItem("my-key"));
