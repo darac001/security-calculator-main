@@ -33,6 +33,12 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		path: '/wire',
 		icon: <WiresIcon />
 	},
+	{
+		key: '4',
+		label: 'Schedules - In progress!',
+		path: '/acschedules',
+		icon: <WiresIcon />
+	},
 
 ]
 
