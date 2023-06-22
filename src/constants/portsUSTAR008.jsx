@@ -1,7 +1,7 @@
 
 
 export const READER_PORTS = [
-  "--Select--",
+  "-",
   "1",
   "2",
   "3",
@@ -13,7 +13,7 @@ export const READER_PORTS = [
 ];
 
 export const INPUT_PORTS = [
-  "--Select--",
+  "-",
   "1",
   "2",
   "3",
@@ -40,7 +40,7 @@ export const INPUT_PORTS = [
   "24",
 ];
 export const OUTPUT_PORTS = [
-  "--Select--",
+  "-",
   "1",
   "2",
   "3",

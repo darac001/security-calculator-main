@@ -91,7 +91,7 @@ const AcSchedules = () => {
     })
     setInput(updatedInputList)
     // add outputs
-    let updatedOutputList=input.map(dev=>{
+    let updatedOutputList=output.map(dev=>{
       if(dev.id==outputPort){
           return {...dev,lvl:addNewReader.lvl,device:addNewReader.device,desc:addNewReader.desc}
       }
@@ -109,9 +109,9 @@ const AcSchedules = () => {
       <div className="md:p-5 col-span-5 ">
         <Header title={title}  />
 
-        <div className="flex flex-col justify-center items-center">
-          <form className="flex flex-col gap-3 min-w-full ">
-            <table className=" text-sm text-left text-gray-800 ">
+        <div className="flex flex-col justify-center items-left">
+          
+            <table className=" text-sm text-left text-gray-800 mb-1">
               <thead className="text-xs text-gray-700 bg-gray-50 ">
                 <tr>
                   <th scope="col" >
@@ -123,7 +123,7 @@ const AcSchedules = () => {
                 <tr>
                   <td>
                     <select
-                      className="md:w-[200px] py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
+                      className="md:w-[200px] py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100 "
                       type="text"
                       id="mfg"
                       name="mfg"
@@ -139,7 +139,10 @@ const AcSchedules = () => {
                 </tr>
               </tbody>
             </table>
-          </form>
+            <hr className="my-6 w-full"/>
+            <p className="py-3 text-left text-[12px] font-bold text-[#29abe0]">
+          ADD NEW DOOR/DEVICE:
+        </p>
           <form
             className="flex flex-col gap-3 min-w-full "
             onSubmit={handleAddNewDevice}
@@ -148,27 +151,16 @@ const AcSchedules = () => {
               <table className=" text-sm text-left text-gray-800 ">
                 <thead className="text-xs text-gray-700 bg-gray-50 ">
                   <tr>
-                    <th scope="col" className="py-1">
+                    <th scope="col" className="py-1 ">
                       Device/Door ID
                     </th>
-                    <th scope="col" className="py-1">
+                    <th scope="col" className="py-1  ">
                       Level
                     </th>
-                    <th scope="col" className="py-1">
+                    <th scope="col" className="py-1 ">
                       Description
                     </th>
-                    <th scope="col" className="py-1 ">
-                      RDR Port
-                    </th>
-                    <th scope="col" className="py-1 ">
-                      Input Port
-                    </th>
-                    <th scope="col" className="py-1 ">
-                    Input Port
-                    </th>
-                    <th scope="col" className="py-1 ">
-                    Output Port
-                    </th>
+
 
                   </tr>
                 </thead>
@@ -183,7 +175,7 @@ const AcSchedules = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="1"
-                        className=" md:w-full py-1 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+                        className=" md:w-full py-1 px-4 border border-[#e2e2e2] placeholder-gray-400 hover:bg-slate-100  "
                       />
                     </td>
                     <td>
@@ -195,7 +187,7 @@ const AcSchedules = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="1"
-                        className=" md:w-full py-1 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+                        className=" md:w-full py-1 px-4 border border-[#e2e2e2] placeholder-gray-400  hover:bg-slate-100 "
                       />
                     </td>
                     <td>
@@ -207,12 +199,41 @@ const AcSchedules = () => {
                         onChange={handleInputChange}
                         required
                         placeholder="1"
-                        className=" md:w-full py-1 px-4 border border-[#e2e2e2] placeholder-gray-400  "
+                        className=" md:w-full py-1 px-4 border border-[#e2e2e2] placeholder-gray-400  hover:bg-slate-100 "
                       />
                     </td>
+
+
+
+                  </tr>
+                </tbody>
+                
+              </table>
+              <table className=" text-sm text-left text-gray-800 ">
+                <thead className="text-xs text-gray-700 bg-gray-50 ">
+                  <tr>
+
+                    <th scope="col" className="py-1 ">
+                      RDR Port
+                    </th>
+                    <th scope="col" className="py-1  ">
+                      Input Port A
+                    </th>
+                    <th scope="col" className="py-1  ">
+                    Input Port B
+                    </th>
+                    <th scope="col" className="py-1  ">
+                    Output Port
+                    </th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+
                     <td>
                       <select
-                        className=" py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
+                        className=" py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100  "
                         type="text"
                         id="reader"
                         name="reader"
@@ -227,7 +248,7 @@ const AcSchedules = () => {
                     </td>
                     <td>
                       <select
-                        className=" py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
+                        className=" py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100  "
                         type="text"
                         id="inputA"
                         name="inputA"
@@ -242,7 +263,7 @@ const AcSchedules = () => {
                     </td>
                     <td>
                       <select
-                        className=" py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
+                        className=" py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100  "
                         type="text"
                         id="inputB"
                         name="inputB"
@@ -257,7 +278,7 @@ const AcSchedules = () => {
                     </td>
                     <td>
                       <select
-                        className=" py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400  "
+                        className=" py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100  "
                         type="text"
                         id="output"
                         name="output"
@@ -270,18 +291,23 @@ const AcSchedules = () => {
                         })}
                       </select>
                     </td>
+                    <td>
+                    <button
+              className=" text-[12px] mx-4 py-0.5 px-3 border border-[#29abe0] text-[#29abe0] font-semibold hover:bg-slate-100"
+              type="submit"
+            >
+              Add to Schedule
+            </button>
+                    </td>
 
 
                   </tr>
+                  
                 </tbody>
+                
               </table>
             </div>
-            <button
-              className="w-full text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
-              type="submit"
-            >
-              Add to Calculator
-            </button>
+
           </form>
         </div>
       </div>
