@@ -12,6 +12,7 @@ import {
 import { ReactComponent as BatteryIcon } from '../assets/icon-battery.svg'
 import { ReactComponent as DCVoltageIcon } from '../assets/icon-voltage.svg'
 import { ReactComponent as WiresIcon } from '../assets/icon-wires.svg'
+import { ReactComponent as TableIcon } from '../assets/icon-table.svg'
 
 export const DASHBOARD_SIDEBAR_LINKS = [
 	{
@@ -37,7 +38,7 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		key: '4',
 		label: 'Schedules - In progress!',
 		path: '/acschedules',
-		icon: <WiresIcon />
+		icon: <TableIcon />
 	},
 
 ]
