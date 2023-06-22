@@ -64,6 +64,7 @@ export const OUTPUT_PORTS = [
 export const READER_LABELS = [
   "CR",
   "CK",
+  " ",
 ];
 export const INPUT_A_LABELS = [
   "DC",
@@ -79,6 +80,7 @@ export const INPUT_A_LABELS = [
   "OHD",
   "ID",
   "IM",
+  " ",
 ];
 export const INPUT_B_LABELS = [
   "RX",
@@ -94,6 +96,7 @@ export const INPUT_B_LABELS = [
   "OHD",
   "ID",
   "IM",
+  " ",
 ];
 export const OUTPUT_LABELS = [
   "ES",
@@ -107,4 +110,5 @@ export const OUTPUT_LABELS = [
   "OHD",
   "GOP",
   "DO",
+  " ",
 ];

@@ -14,16 +14,16 @@ import {
 
 const AcSchedules = () => {
   const [reader, setReader] = useState([
-    { id: 1, lvl: "-", device: "-", desc: "-", type: "-", notes: "-" },
-    { id: 2, lvl: "-", device: "-", desc: "-", type: "-", notes: "-" },
+    { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
   ]);
   const [input, setInput] = useState([
-    { id: 1, lvl: "-", device: "-", desc: "-", type: "-", notes: "-" },
-    { id: 2, lvl: "-", device: "-", desc: "-", type: "-", notes: "-" },
+    { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
   ]);
   const [output, setOutput] = useState([
-    { id: 1, lvl: "-", device: "-", desc: "-", type: "-", notes: "-" },
-    { id: 2, lvl: "-", device: "-", desc: "-", type: "-", notes: "-" },
+    { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
   ]);
 
   const [addNewReader, setAddNewReader] = useState({
@@ -47,13 +47,13 @@ const AcSchedules = () => {
     setIsSWHUSTAR008(true);
   };
   const [rdrPort, setRdrPort] = useState("--Select--");
-  const [rdrPortLabel, setRdrPortLabel] = useState("--Select--");
+  const [rdrPortLabel, setRdrPortLabel] = useState("CR");
   const [inputPortA, setInputPortA] = useState("--Select--");
-  const [inputPortALabel, setInputPortALabel] = useState("--Select--");
+  const [inputPortALabel, setInputPortALabel] = useState("DC");
   const [inputPortB, setInputPortB] = useState("--Select--");
-  const [inputPortBLabel, setInputPortBLabel] = useState("--Select--");
+  const [inputPortBLabel, setInputPortBLabel] = useState("RX");
   const [outputPort, setOutputPort] = useState("--Select--");
-  const [outputPortLabel, setOutputPortLabel] = useState("--Select--");
+  const [outputPortLabel, setOutputPortLabel] = useState("ES");
 
   const handleRdrPortChange = (e) => {
     e.preventDefault();
@@ -120,6 +120,7 @@ const AcSchedules = () => {
           lvl: addNewReader.lvl,
           device: addNewReader.device,
           desc: addNewReader.desc,
+          type: rdrPortLabel,
         };
       }
       return dev;
@@ -127,12 +128,24 @@ const AcSchedules = () => {
     setReader(updatedList);
     // add inputs
     let updatedInputList = input.map((dev) => {
-      if (dev.id == inputPortA || dev.id == inputPortB) {
+      if (dev.id == inputPortA) {
         return {
           ...dev,
           lvl: addNewReader.lvl,
           device: addNewReader.device,
           desc: addNewReader.desc,
+          type: inputPortALabel,
+          
+        };
+      }
+      if (dev.id == inputPortB) {
+        return {
+          ...dev,
+          lvl: addNewReader.lvl,
+          device: addNewReader.device,
+          desc: addNewReader.desc,
+          type: inputPortBLabel,
+          
         };
       }
 
@@ -147,6 +160,7 @@ const AcSchedules = () => {
           lvl: addNewReader.lvl,
           device: addNewReader.device,
           desc: addNewReader.desc,
+          type: outputPortLabel,
         };
       }
 
@@ -219,7 +233,7 @@ const AcSchedules = () => {
                         name="device"
                         value={addNewReader.device}
                         onChange={handleInputChange}
-                        required
+                        
                         
                         className=" w-[150px] py-1 px-4 border border-[#e2e2e2] placeholder-gray-400 hover:bg-slate-100 "
                       />
@@ -241,7 +255,7 @@ const AcSchedules = () => {
                         name="desc"
                         value={addNewReader.desc}
                         onChange={handleInputChange}
-                        required
+                       
                         
                         className=" w-[250px] py-1 px-4 border border-[#e2e2e2] placeholder-gray-400  hover:bg-slate-100 "
                       />
