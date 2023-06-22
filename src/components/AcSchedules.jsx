@@ -111,7 +111,7 @@ const AcSchedules = () => {
 
         <div className="flex flex-col justify-center items-left">
           
-            <table className=" text-sm text-left text-gray-800 mb-1">
+            <table className=" text-sm text-left text-gray-800 ">
               <thead className="text-xs text-gray-700 bg-gray-50 ">
                 <tr>
                   <th scope="col" >
@@ -140,7 +140,7 @@ const AcSchedules = () => {
               </tbody>
             </table>
             <hr className="my-6 w-full"/>
-            <p className="py-3 text-left text-[12px] font-bold text-[#29abe0]">
+            <p className="pb-3 text-left text-[12px] font-bold text-[#29abe0]">
           ADD NEW DOOR/DEVICE:
         </p>
           <form
