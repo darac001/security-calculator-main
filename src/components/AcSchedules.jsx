@@ -120,6 +120,7 @@ const AcSchedules = () => {
           lvl: addNewReader.lvl,
           device: addNewReader.device,
           desc: addNewReader.desc,
+          notes: addNewReader.notes,
           type: rdrPortLabel,
         };
       }
@@ -134,8 +135,8 @@ const AcSchedules = () => {
           lvl: addNewReader.lvl,
           device: addNewReader.device,
           desc: addNewReader.desc,
+          notes: addNewReader.notes,
           type: inputPortALabel,
-          
         };
       }
       if (dev.id == inputPortB) {
@@ -144,8 +145,8 @@ const AcSchedules = () => {
           lvl: addNewReader.lvl,
           device: addNewReader.device,
           desc: addNewReader.desc,
+          notes: addNewReader.notes,
           type: inputPortBLabel,
-          
         };
       }
 
@@ -160,6 +161,7 @@ const AcSchedules = () => {
           lvl: addNewReader.lvl,
           device: addNewReader.device,
           desc: addNewReader.desc,
+          notes: addNewReader.notes,
           type: outputPortLabel,
         };
       }
@@ -168,6 +170,11 @@ const AcSchedules = () => {
     });
     setOutput(updatedOutputList);
   }
+
+  const resetInput = (e) => {
+    e.target.value = "";
+  }
+
 
   return (
     <>
@@ -185,7 +192,7 @@ const AcSchedules = () => {
               <tr>
                 <td>
                   <select
-                    className="md:w-[200px] py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100 "
+                    className="md:w-[200px] py-1 px-4 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100 "
                     type="text"
                     id="mfg"
                     name="mfg"
@@ -206,12 +213,12 @@ const AcSchedules = () => {
             ADD NEW DOOR/DEVICE:
           </p>
           <form
-            className="flex flex-col gap-3 min-w-full "
+            className="flex flex-col gap-3 min-w-full bg-slate-200 p-4"
             onSubmit={handleAddNewDevice}
           >
-            <div>
+            <div >
               <table className=" text-sm text-left text-gray-800 ">
-                <thead className="text-xs text-gray-700 bg-gray-50 ">
+                <thead className="text-xs text-gray-700 bg-slate-200 ">
                   <tr>
                     <th scope="col" className="py-1 ">
                       Device/Door ID
@@ -222,6 +229,9 @@ const AcSchedules = () => {
                     <th scope="col" className="py-1 ">
                       Description
                     </th>
+                    <th scope="col" className="py-1 ">
+                      Notes
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -231,11 +241,10 @@ const AcSchedules = () => {
                         type="text"
                         id="device"
                         name="device"
+                        onFocus={(e) => resetInput(e)}
                         value={addNewReader.device}
                         onChange={handleInputChange}
-                        
-                        
-                        className=" w-[150px] py-1 px-4 border border-[#e2e2e2] placeholder-gray-400 hover:bg-slate-100 "
+                        className=" w-[150px] py-1 px-4 border border-[#e2e2e2] hover:bg-slate-100 "
                       />
                     </td>
                     <td>
@@ -243,9 +252,10 @@ const AcSchedules = () => {
                         type="text"
                         id="lvl"
                         name="lvl"
+                        onFocus={(e) => resetInput(e)}
                         value={addNewReader.lvl}
                         onChange={handleInputChange}
-                        className=" w-[150px] py-1 px-4 border border-[#e2e2e2] placeholder-gray-400  hover:bg-slate-100 "
+                        className=" w-[150px] py-1 px-4 border border-[#e2e2e2] hover:bg-slate-100 "
                       />
                     </td>
                     <td>
@@ -253,18 +263,28 @@ const AcSchedules = () => {
                         type="text"
                         id="desc"
                         name="desc"
+                        onFocus={(e) => resetInput(e)}
                         value={addNewReader.desc}
                         onChange={handleInputChange}
-                       
-                        
-                        className=" w-[250px] py-1 px-4 border border-[#e2e2e2] placeholder-gray-400  hover:bg-slate-100 "
+                        className=" w-[250px] py-1 px-4 border border-[#e2e2e2]  hover:bg-slate-100 "
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        id="notes"
+                        name="notes"
+                        onFocus={(e) => resetInput(e)}
+                        value={addNewReader.notes}
+                        onChange={handleInputChange}
+                        className=" w-[250px] py-1 px-4 border border-[#e2e2e2]  hover:bg-slate-100 "
                       />
                     </td>
                   </tr>
                 </tbody>
               </table>
               <table className=" text-sm text-left text-gray-800 mt-2 ">
-                <thead className="text-xs text-gray-700 bg-gray-50 ">
+                <thead className="text-xs text-gray-700 bg-slate-200 ">
                   <tr>
                     <th scope="col" className="py-1 " colSpan={2}>
                       Reader Port
@@ -287,7 +307,7 @@ const AcSchedules = () => {
                   <tr>
                     <td>
                       <select
-                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100  "
+                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100  "
                         type="text"
                         id="reader"
                         name="reader"
@@ -302,7 +322,7 @@ const AcSchedules = () => {
                     </td>
                     <td>
                       <select
-                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100 mr-4 "
+                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100 mr-4 "
                         type="text"
                         id="reader"
                         name="reader"
@@ -317,7 +337,7 @@ const AcSchedules = () => {
                     </td>
                     <td>
                       <select
-                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100  "
+                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100  "
                         type="text"
                         id="inputA"
                         name="inputA"
@@ -332,7 +352,7 @@ const AcSchedules = () => {
                     </td>
                     <td>
                       <select
-                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100 mr-4"
+                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100 mr-4"
                         type="text"
                         id="reader"
                         name="reader"
@@ -347,7 +367,7 @@ const AcSchedules = () => {
                     </td>
                     <td>
                       <select
-                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100  "
+                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100  "
                         type="text"
                         id="inputB"
                         name="inputB"
@@ -362,7 +382,7 @@ const AcSchedules = () => {
                     </td>
                     <td>
                       <select
-                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100 mr-4"
+                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100 mr-4"
                         type="text"
                         id="reader"
                         name="reader"
@@ -377,7 +397,7 @@ const AcSchedules = () => {
                     </td>
                     <td>
                       <select
-                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100  "
+                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100  "
                         type="text"
                         id="output"
                         name="output"
@@ -392,7 +412,7 @@ const AcSchedules = () => {
                     </td>
                     <td>
                       <select
-                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-400 hover:bg-slate-100 mr-4"
+                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100 mr-4"
                         type="text"
                         id="reader"
                         name="reader"
