@@ -58,3 +58,53 @@ export const OUTPUT_PORTS = [
   "15",
   "16",
 ];
+
+
+
+export const READER_LABELS = [
+  "CR",
+  "CK",
+];
+export const INPUT_A_LABELS = [
+  "DC",
+  "DPS",
+  "RX",
+  "PB",
+  "PS",
+  "DA",
+  "DB",
+  "MD",
+  "MS",
+  "GB",
+  "OHD",
+  "ID",
+  "IM",
+];
+export const INPUT_B_LABELS = [
+  "RX",
+  "DC",
+  "DPS",
+  "PB",
+  "PS",
+  "DA",
+  "DB",
+  "MD",
+  "MS",
+  "GB",
+  "OHD",
+  "ID",
+  "IM",
+];
+export const OUTPUT_LABELS = [
+  "ES",
+  "EL",
+  "EP",
+  "ML",
+  "MAG",
+  "DE",
+  "AO",
+  "AOP",
+  "OHD",
+  "GOP",
+  "DO",
+];
