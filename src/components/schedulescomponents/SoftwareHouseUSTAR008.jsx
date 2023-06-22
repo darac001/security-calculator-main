@@ -76,13 +76,13 @@ const Output = ({ output, n, outp }) => {
 const SoftwareHouseUSTAR008 = ({ reader,input,output }) => {
   return (
     <>
-      <div>USTAR008</div>
+      {/* <div>USTAR008</div> */}
       <table id="my-table" className="w-full text-sm text-left text-gray-800 ">
         <thead className="text-xs text-gray-700 bg-gray-50  ">
           <tr className="px-6 py-2 text-center text-white bg-slate-400 ">
             <th
               scope="col"
-              colSpan={7}
+              colSpan={6}
               className="px-6 py-1 text-lg text-left h-2"
             >
               ACM#1

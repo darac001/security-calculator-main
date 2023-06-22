@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import SoftwareHouseUSTAR008 from "./schedulescomponents/SoftwareHouseUSTAR008";
 import { CONTROLLERS } from "../constants/schedulescontrollers";
@@ -12,8 +12,16 @@ import {
   INPUT_B_LABELS,
 } from "../constants/portsUSTAR008";
 
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
+import XLSX from "xlsx-js-style";
+
 const AcSchedules = () => {
-  const [reader, setReader] = useState([
+  const items_readers = JSON.parse(localStorage.getItem("readers"));
+  const items_inputs = JSON.parse(localStorage.getItem("inputs"));
+  const items_outputs = JSON.parse(localStorage.getItem("outputs"));
+
+  const reset_r=[
     { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 3, lvl: "", device: "", desc: "", type: "", notes: "" },
@@ -22,8 +30,9 @@ const AcSchedules = () => {
     { id: 6, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 7, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 8, lvl: "", device: "", desc: "", type: "", notes: "" },
-  ]);
-  const [input, setInput] = useState([
+  ]
+
+  const reset_i=[
     { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 3, lvl: "", device: "", desc: "", type: "", notes: "" },
@@ -48,8 +57,9 @@ const AcSchedules = () => {
     { id: 22, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 23, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 24, lvl: "", device: "", desc: "", type: "", notes: "" },
-  ]);
-  const [output, setOutput] = useState([
+  ]
+
+  const reset_o=[
     { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 3, lvl: "", device: "", desc: "", type: "", notes: "" },
@@ -66,7 +76,23 @@ const AcSchedules = () => {
     { id: 14, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 15, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 16, lvl: "", device: "", desc: "", type: "", notes: "" },
-  ]);
+  ]
+
+  const [reader, setReader] = useState(
+    items_readers
+      ? items_readers
+      : reset_r
+  );
+  const [input, setInput] = useState(
+    items_inputs
+      ? items_inputs
+      : reset_i
+  );
+  const [output, setOutput] = useState(
+    items_outputs
+      ? items_outputs
+      : reset_o
+  );
 
   const [addNewReader, setAddNewReader] = useState({
     id: 1,
@@ -76,6 +102,16 @@ const AcSchedules = () => {
     type: " ",
     notes: " ",
   });
+
+
+  const resetCalcs = () => {
+    setReader(reset_r);
+    setInput(reset_i);
+    setOutput(reset_o);
+    localStorage.setItem("readers", JSON.stringify(reset_r));
+    localStorage.setItem("inputs", JSON.stringify(reset_i));
+    localStorage.setItem("outputs", JSON.stringify(reset_o));
+  };
 
   const title = "ACCESS CONTROL SCHEDULES";
 
@@ -215,7 +251,82 @@ const AcSchedules = () => {
 
   const resetInput = (e) => {
     e.target.value = "";
-  }
+  };
+
+  useEffect(() => {
+    localStorage.setItem("readers", JSON.stringify(reader));
+    localStorage.setItem("inputs", JSON.stringify(input));
+    localStorage.setItem("outputs", JSON.stringify(output));
+  }, [reader, input, output]);
+
+
+
+
+
+
+  // *******************************************************
+  //  pdf export
+
+  const createPDF = () => {
+    const doc = new jsPDF({
+      orientation: "landscape",
+      format:"a3"
+    });
+    doc.setFontSize(10);
+    // doc.text(`Project Name: ${projectName}`, 14, 16);
+    // doc.setFontSize(10);
+    // doc.text(`Created: ${date.toLocaleDateString()}`, 14, 22);
+    doc.autoTable({
+      margin: { top: 15 },
+      html: "#my-table",
+      theme: "striped",
+      columnStyles: {
+        0: {
+          columnWidth: 20,
+        },
+        1: {
+          columnWidth: 15,
+        },
+        2: {
+          columnWidth: 30,
+        },
+        3: {
+          columnWidth: 50,
+        },
+        4: {
+          columnWidth: 25,
+        },
+        5: {
+          columnWidth: 40,
+        },
+        
+      },
+
+      styles: {
+        cellPadding: 1,
+        valign: "middle",
+        halign: "center",
+        fontSize: 7,
+        lineColor: [44, 62, 80],
+        lineWidth: 0.1,
+      },
+
+      headStyles: {
+        valign: "middle",
+        halign: "left",
+        fillColor: [220, 220, 220],
+        textColor: [0, 0, 0],
+      },
+      bodyStyles: { valign: "middle", halign: "left", cellWidth: "50" },
+    });
+     
+      doc.save("project.pdf");
+    
+  };
+
+
+
+
 
 
   return (
@@ -247,6 +358,22 @@ const AcSchedules = () => {
                     })}
                   </select>
                 </td>
+                <td>
+                  <button
+                    onClick={resetCalcs}
+                    type="button"
+                    className="w-[100px] text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
+                  >
+                    RESET
+                  </button>
+                </td>
+                <button
+            onClick={createPDF}
+            type="button"
+            className="w-[100px] text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
+          >
+            PDF
+          </button>
               </tr>
             </tbody>
           </table>
@@ -258,7 +385,7 @@ const AcSchedules = () => {
             className="flex flex-col gap-3 min-w-full bg-slate-200 p-4"
             onSubmit={handleAddNewDevice}
           >
-            <div >
+            <div>
               <table className=" text-sm text-left text-gray-800 ">
                 <thead className="text-xs text-gray-700 bg-slate-200 ">
                   <tr>
@@ -325,7 +452,7 @@ const AcSchedules = () => {
                   </tr>
                 </tbody>
               </table>
-              <table className=" text-sm text-left text-gray-800 mt-2 ">
+              <table className=" text-sm text-left text-gray-800 mt-2 " >
                 <thead className="text-xs text-gray-700 bg-slate-200 ">
                   <tr>
                     <th scope="col" className="py-1 " colSpan={2}>
@@ -483,7 +610,7 @@ const AcSchedules = () => {
         </div>
       </div>
 
-      <div className="flex p-5 flex-col w-[800px] " id="pdf">
+      <div className="flex p-5 flex-col w-[800px] " >
         <SoftwareHouseUSTAR008 reader={reader} input={input} output={output} />
       </div>
     </>
