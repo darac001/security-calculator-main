@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Header from "./Header";
 import SoftwareHouseUSTAR008 from "./schedulescomponents/SoftwareHouseUSTAR008";
+import SoftwareHouseUSTAR016 from "./schedulescomponents/SoftwareHouseUSTAR016";
 import { CONTROLLERS } from "../constants/schedulescontrollers";
 import {
+  ACM_PORTS,
   READER_PORTS,
   INPUT_PORTS,
   OUTPUT_PORTS,
@@ -21,7 +23,7 @@ const AcSchedules = () => {
   const items_inputs = JSON.parse(localStorage.getItem("inputs"));
   const items_outputs = JSON.parse(localStorage.getItem("outputs"));
 
-  const reset_r=[
+  const reset_r = [
     { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 3, lvl: "", device: "", desc: "", type: "", notes: "" },
@@ -30,9 +32,17 @@ const AcSchedules = () => {
     { id: 6, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 7, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 8, lvl: "", device: "", desc: "", type: "", notes: "" },
-  ]
+    { id: 9, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 10, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 11, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 12, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 13, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 14, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 15, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 16, lvl: "", device: "", desc: "", type: "", notes: "" },
+  ];
 
-  const reset_i=[
+  const reset_i = [
     { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 3, lvl: "", device: "", desc: "", type: "", notes: "" },
@@ -57,9 +67,9 @@ const AcSchedules = () => {
     { id: 22, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 23, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 24, lvl: "", device: "", desc: "", type: "", notes: "" },
-  ]
+  ];
 
-  const reset_o=[
+  const reset_o = [
     { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 3, lvl: "", device: "", desc: "", type: "", notes: "" },
@@ -76,23 +86,11 @@ const AcSchedules = () => {
     { id: 14, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 15, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 16, lvl: "", device: "", desc: "", type: "", notes: "" },
-  ]
+  ];
 
-  const [reader, setReader] = useState(
-    items_readers
-      ? items_readers
-      : reset_r
-  );
-  const [input, setInput] = useState(
-    items_inputs
-      ? items_inputs
-      : reset_i
-  );
-  const [output, setOutput] = useState(
-    items_outputs
-      ? items_outputs
-      : reset_o
-  );
+  const [reader, setReader] = useState(items_readers ? items_readers : reset_r);
+  const [input, setInput] = useState(items_inputs ? items_inputs : reset_i);
+  const [output, setOutput] = useState(items_outputs ? items_outputs : reset_o);
 
   const [addNewReader, setAddNewReader] = useState({
     id: 1,
@@ -103,11 +101,19 @@ const AcSchedules = () => {
     notes: " ",
   });
 
-
   const resetCalcs = () => {
     setReader(reset_r);
     setInput(reset_i);
     setOutput(reset_o);
+    setAcmPort("ACM#1")
+    setRdrPort("")
+    setRdrPortLabel("CR")
+    setInputPortA("")
+    setInputPortALabel("DC")
+    setInputPortB("")
+    setInputPortBLabel("RX")
+    setOutputPort("")
+    setOutputPortLabel("ES")
     localStorage.setItem("readers", JSON.stringify(reset_r));
     localStorage.setItem("inputs", JSON.stringify(reset_i));
     localStorage.setItem("outputs", JSON.stringify(reset_o));
@@ -116,13 +122,12 @@ const AcSchedules = () => {
   const title = "ACCESS CONTROL SCHEDULES";
 
   const [manuf, setManuf] = useState("--Select--");
-  const [isSWHUSTAR008, setIsSWHUSTAR008] = useState(false);
+
+
   const handleMfgChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
-    // console.log(e.target.value);
     setManuf(e.target.value);
-    setIsSWHUSTAR008(true);
   };
   const [rdrPort, setRdrPort] = useState("--Select--");
   const [rdrPortLabel, setRdrPortLabel] = useState("CR");
@@ -132,6 +137,7 @@ const AcSchedules = () => {
   const [inputPortBLabel, setInputPortBLabel] = useState("RX");
   const [outputPort, setOutputPort] = useState("--Select--");
   const [outputPortLabel, setOutputPortLabel] = useState("ES");
+  const [acmPort, setAcmPort] = useState("ACM#1");
 
   const handleRdrPortChange = (e) => {
     e.preventDefault();
@@ -181,6 +187,12 @@ const AcSchedules = () => {
     // console.log(e.target.value);
     setOutputPortLabel(e.target.value);
   };
+  const handleAcmPortChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    // console.log(e.target.value);
+    setAcmPort(e.target.value);
+  };
 
   const handleInputChange = (e) => {
     e.preventDefault();
@@ -190,21 +202,38 @@ const AcSchedules = () => {
 
   function handleAddNewDevice(e) {
     e.preventDefault();
-    // add reader
+    // ********************
+    // add readers
     let updatedList = reader.map((dev) => {
-      if (dev.id == rdrPort) {
-        return {
-          ...dev,
-          lvl: addNewReader.lvl,
-          device: addNewReader.device,
-          desc: addNewReader.desc,
-          notes: addNewReader.notes,
-          type: rdrPortLabel,
-        };
+      if ((acmPort == "ACM#1")) {
+        if (dev.id == rdrPort) {
+          return {
+            ...dev,
+            lvl: addNewReader.lvl,
+            device: addNewReader.device,
+            desc: addNewReader.desc,
+            notes: addNewReader.notes,
+            type: rdrPortLabel,
+          };
+        }
+        return dev;
       }
-      return dev;
+      else{
+        if (dev.id == Number(rdrPort)+8) {
+          return {
+            ...dev,
+            lvl: addNewReader.lvl,
+            device: addNewReader.device,
+            desc: addNewReader.desc,
+            notes: addNewReader.notes,
+            type: rdrPortLabel,
+          };
+        }
+        return dev;
+      }
     });
     setReader(updatedList);
+    // ********************
     // add inputs
     let updatedInputList = input.map((dev) => {
       if (dev.id == inputPortA) {
@@ -231,6 +260,7 @@ const AcSchedules = () => {
       return dev;
     });
     setInput(updatedInputList);
+    // ********************
     // add outputs
     let updatedOutputList = output.map((dev) => {
       if (dev.id == outputPort) {
@@ -259,18 +289,13 @@ const AcSchedules = () => {
     localStorage.setItem("outputs", JSON.stringify(output));
   }, [reader, input, output]);
 
-
-
-
-
-
   // *******************************************************
   //  pdf export
 
   const createPDF = () => {
     const doc = new jsPDF({
       orientation: "landscape",
-      format:"a3"
+      format: "a3",
     });
     doc.setFontSize(10);
     // doc.text(`Project Name: ${projectName}`, 14, 16);
@@ -299,7 +324,6 @@ const AcSchedules = () => {
         5: {
           columnWidth: 40,
         },
-        
       },
 
       styles: {
@@ -319,15 +343,9 @@ const AcSchedules = () => {
       },
       bodyStyles: { valign: "middle", halign: "left", cellWidth: "50" },
     });
-     
-      doc.save("project.pdf");
-    
+
+    doc.save("project.pdf");
   };
-
-
-
-
-
 
   return (
     <>
@@ -368,12 +386,12 @@ const AcSchedules = () => {
                   </button>
                 </td>
                 <button
-            onClick={createPDF}
-            type="button"
-            className="w-[100px] text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
-          >
-            PDF
-          </button>
+                  onClick={createPDF}
+                  type="button"
+                  className="w-[100px] text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
+                >
+                  PDF
+                </button>
               </tr>
             </tbody>
           </table>
@@ -452,9 +470,12 @@ const AcSchedules = () => {
                   </tr>
                 </tbody>
               </table>
-              <table className=" text-sm text-left text-gray-800 mt-2 " >
+              <table className=" text-sm text-left text-gray-800 mt-2 ">
                 <thead className="text-xs text-gray-700 bg-slate-200 ">
                   <tr>
+                    <th scope="col" className="py-1 " colSpan={1}>
+                      ACM
+                    </th>
                     <th scope="col" className="py-1 " colSpan={2}>
                       Reader Port
                     </th>
@@ -474,6 +495,21 @@ const AcSchedules = () => {
                 </thead>
                 <tbody>
                   <tr>
+                    <td>
+                      <select
+                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100  mr-4"
+                        type="text"
+                        id="acmPort"
+                        name="acmPort"
+                        value={acmPort}
+                        onChange={handleAcmPortChange}
+                        required
+                      >
+                        {ACM_PORTS.map((rdr) => {
+                          return <option>{rdr}</option>;
+                        })}
+                      </select>
+                    </td>
                     <td>
                       <select
                         className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100  "
@@ -610,8 +646,10 @@ const AcSchedules = () => {
         </div>
       </div>
 
-      <div className="flex p-5 flex-col w-[800px] " >
-        <SoftwareHouseUSTAR008 reader={reader} input={input} output={output} />
+      <div className="flex p-5 flex-col  ">
+        {manuf=="Software House USTAR008"&&<SoftwareHouseUSTAR008 reader={reader} input={input} output={output} />}
+        {manuf=="Software House USTAR016"&&<SoftwareHouseUSTAR016 reader={reader} input={input} output={output} />}
+        
       </div>
     </>
   );

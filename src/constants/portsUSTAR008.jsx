@@ -1,5 +1,10 @@
 
 
+export const ACM_PORTS = [
+  "ACM#1",
+  "ACM#2",
+
+];
 export const READER_PORTS = [
   "-",
   "1",

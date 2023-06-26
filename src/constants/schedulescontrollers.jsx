@@ -1,4 +1,4 @@
-export const CONTROLLERS = ["--Select--", "Software House USTAR008"];
+export const CONTROLLERS = ["--Select--", "Software House USTAR008","Software House USTAR016"];
 
 export const READER_PORTS_USTAR008 = [
   "--Select--",
