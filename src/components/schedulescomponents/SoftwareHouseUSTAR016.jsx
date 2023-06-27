@@ -2,41 +2,41 @@ import React from "react";
 
 const Reader = ({ reader, n,n2, wiegand }) => {
   return (
-    <tr className="px-6  text-center h-2 border border-[#e2e2e2]">
-      <td className="px-6  text-center font-bold h-2 border border-[#e2e2e2]">
+    <tr className="px-2  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center font-bold h-2 border border-[#e2e2e2]">
         {wiegand}
       </td>
-      <td className="px-6  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center h-2 border border-[#e2e2e2]">
         {reader[n].lvl}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n].device}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n].desc}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n].type}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n].notes}
       </td>
-      <td className="px-6  text-center font-bold h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center font-bold h-2 border border-[#e2e2e2]">
         {wiegand}
       </td>
-      <td className="px-6  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center h-2 border border-[#e2e2e2]">
         {reader[n2].lvl}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n2].device}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n2].desc}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n2].type}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n2].notes}
       </td>
     </tr>
@@ -44,41 +44,41 @@ const Reader = ({ reader, n,n2, wiegand }) => {
 };
 const Input = ({ input, n,n2, inp }) => {
   return (
-    <tr className="px-6  text-center h-2 border border-[#e2e2e2]">
-      <td className="px-6  text-center font-bold h-2 border border-[#e2e2e2]">
+    <tr className="px-2  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center font-bold h-2 border border-[#e2e2e2]">
         {inp}
       </td>
-      <td className="px-6  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center h-2 border border-[#e2e2e2]">
         {input[n].lvl}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n].device}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n].desc}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n].type}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n].notes}
       </td>
-      <td className="px-6  text-center font-bold h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center font-bold h-2 border border-[#e2e2e2]">
         {inp}
       </td>
-      <td className="px-6  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center h-2 border border-[#e2e2e2]">
         {input[n2].lvl}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n2].device}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n2].desc}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n2].type}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n2].notes}
       </td>
     </tr>
@@ -86,41 +86,41 @@ const Input = ({ input, n,n2, inp }) => {
 };
 const Output = ({ output, n,n2, outp }) => {
   return (
-    <tr className="px-6  text-center h-2 border border-[#e2e2e2]">
-      <td className="px-6  text-center font-bold h-2 border border-[#e2e2e2]">
+    <tr className="px-2  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center font-bold h-2 border border-[#e2e2e2]">
         {outp}
       </td>
-      <td className="px-6  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center h-2 border border-[#e2e2e2]">
         {output[n].lvl}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n].device}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n].desc}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n].type}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n].notes}
       </td>
-      <td className="px-6  text-center font-bold h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center font-bold h-2 border border-[#e2e2e2]">
         {outp}
       </td>
-      <td className="px-6  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center h-2 border border-[#e2e2e2]">
         {output[n2].lvl}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n2].device}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n2].desc}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n2].type}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n2].notes}
       </td>
     </tr>
@@ -130,10 +130,10 @@ const Output = ({ output, n,n2, outp }) => {
 const SoftwareHouseUSTAR016 = ({ reader, input, output }) => {
   return (
     <>
-      
+
         <table id="my-table" className=" w-full text-sm text-left text-gray-800 ">
           <thead className="text-xs text-gray-700 bg-gray-50  ">
-            <tr className="px-6 py-2 text-center text-white bg-slate-400 ">
+            <tr className="px-6 py-2 text-center text-white bg-slate-400 " >
               <th
                 scope="col"
                 colSpan={6}

@@ -143,7 +143,7 @@ const AcSchedules = () => {
   });
 
   const resetCalcs = () => {
-    setManuf("");
+    setManuf("--Select--");
     setReader(reset_r);
     setInput(reset_i);
     setOutput(reset_o);
@@ -168,6 +168,7 @@ const AcSchedules = () => {
       notes: " ",
     });
   };
+
 
   const title = "ACCESS CONTROL SCHEDULES";
 
@@ -305,10 +306,10 @@ const AcSchedules = () => {
             type: inputPortBLabel,
           };
         }
-        
+
         return dev;
       } else {
-        if (dev.id == Number(inputPortA)+24) {
+        if (dev.id == Number(inputPortA) + 24) {
           return {
             ...dev,
             lvl: addNewReader.lvl,
@@ -318,7 +319,7 @@ const AcSchedules = () => {
             type: inputPortALabel,
           };
         }
-        if (dev.id == Number(inputPortB)+24) {
+        if (dev.id == Number(inputPortB) + 24) {
           return {
             ...dev,
             lvl: addNewReader.lvl,
@@ -336,7 +337,6 @@ const AcSchedules = () => {
     // add outputs
     let updatedOutputList = output.map((dev) => {
       if (acmPort == "ACM#1") {
-
         if (dev.id == outputPort) {
           return {
             ...dev,
@@ -347,10 +347,10 @@ const AcSchedules = () => {
             type: outputPortLabel,
           };
         }
-  
+
         return dev;
-      }else{
-        if (dev.id == Number(outputPort)+16) {
+      } else {
+        if (dev.id == Number(outputPort) + 16) {
           return {
             ...dev,
             lvl: addNewReader.lvl,
@@ -360,7 +360,7 @@ const AcSchedules = () => {
             type: outputPortLabel,
           };
         }
-  
+
         return dev;
       }
     });
@@ -371,13 +371,46 @@ const AcSchedules = () => {
     e.target.value = "";
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     localStorage.setItem("controller", JSON.stringify(manuf));
     localStorage.setItem("readers", JSON.stringify(reader));
     localStorage.setItem("inputs", JSON.stringify(input));
     localStorage.setItem("outputs", JSON.stringify(output));
   }, [reader, input, output, manuf]);
 
+
+
+
+
+  const clearWhenManufChanged = () => {
+    
+    setReader(reset_r);
+    setInput(reset_i);
+    setOutput(reset_o);
+    setAcmPort("ACM#1");
+    setRdrPort("");
+    setRdrPortLabel("CR");
+    setInputPortA("");
+    setInputPortALabel("DC");
+    setInputPortB("");
+    setInputPortBLabel("RX");
+    setOutputPort("");
+    setOutputPortLabel("ES");
+    localStorage.setItem("readers", JSON.stringify(reset_r));
+    localStorage.setItem("inputs", JSON.stringify(reset_i));
+    localStorage.setItem("outputs", JSON.stringify(reset_o));
+    setAddNewReader({
+      id: 1,
+      lvl: " ",
+      device: " ",
+      desc: " ",
+      type: " ",
+      notes: " ",
+    });
+  };
+  useEffect(()=>{
+    clearWhenManufChanged()
+  },[manuf])
   // *******************************************************
   //  pdf export
 
@@ -422,6 +455,7 @@ const AcSchedules = () => {
         fontSize: 7,
         lineColor: [44, 62, 80],
         lineWidth: 0.1,
+        textColor: [0, 0, 0],
       },
 
       headStyles: {
@@ -436,10 +470,84 @@ const AcSchedules = () => {
     doc.save("project.pdf");
   };
 
+  // *******************************************************
+  // excel export
+
+  const createExcel = () => {
+    const new_workbook = XLSX.utils.book_new();
+    const merge = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } },
+      { s: { r: 0, c: 6 }, e: { r: 0, c: 11 } },
+      { s: { r: 2, c: 0 }, e: { r: 2, c: 5 } },
+      { s: { r: 2, c: 6 }, e: { r: 2, c: 11 } },
+      { s: { r: 11, c: 0 }, e: { r: 11, c: 5 } },
+      { s: { r: 11, c: 6 }, e: { r: 11, c: 11 } },
+      { s: { r: 36, c: 0 }, e: { r: 36, c: 5 } },
+      { s: { r: 36, c: 6 }, e: { r: 36, c: 11 } },
+    ];
+
+    let tbl1 = document.getElementById("my-table");
+
+    let worksheet_tmp1 = XLSX.utils.table_to_sheet(tbl1);
+
+    let a = XLSX.utils.sheet_to_json(worksheet_tmp1, { skipHeader: true });
+
+    // a = a.concat("").concat(b);
+
+    let worksheet = XLSX.utils.json_to_sheet(a, {
+      origin: 1,
+      skipHeader: true,
+    });
+    worksheet["!merges"] = merge;
+    worksheet["!cols"] = [
+      { width: 15 },
+      { width: 12 },
+      { width: 20 },
+      { width: 30 },
+      { width: 15 },
+      { width: 20 },
+      { width: 15 },
+      { width: 12 },
+      { width: 20 },
+      { width: 30 },
+      { width: 15 },
+      { width: 20 },
+    ];
+    // worksheet["!rows"] = [
+    //   { hpt: 20 },
+    //   { hpt: 20 },
+    //   { hpt: 20 },
+    //   { hpt: 20 },
+    //   { hpt: 20 },
+    //   { hpt: 20 },
+    // ];
+
+    if (manuf == "Software House USTAR008") {
+      XLSX.utils.sheet_add_aoa(
+        worksheet,
+        [["ACM#1", "", "", "", "", "",]],
+        { origin: 0 }
+      );
+    }
+    if (manuf == "Software House USTAR016") {
+      XLSX.utils.sheet_add_aoa(
+        worksheet,
+        [["ACM#1", "", "", "", "", "", "ACM#2", "", "", "", "", ""]],
+        { origin: 0 }
+      );
+    }
+
+
+    // worksheet["!cols"] = [{ s: { font: { bold: true, color: { rgb: "AA4A44" } } } }];
+
+    XLSX.utils.book_append_sheet(new_workbook, worksheet, "worksheet");
+    XLSX.writeFile(new_workbook, "project.xlsx");
+  };
+
   return (
     <>
-      <div className="md:p-5 col-span-5 ">
-        <Header title={title} />
+      <div className="p-5 col-span-5 ">
+        {/* <Header title={title} /> */}
 
         <div className="flex flex-col justify-center items-left">
           <table className=" text-sm text-left text-gray-800 ">
@@ -465,22 +573,6 @@ const AcSchedules = () => {
                     })}
                   </select>
                 </td>
-                <td>
-                  <button
-                    onClick={resetCalcs}
-                    type="button"
-                    className="w-[100px] text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
-                  >
-                    RESET
-                  </button>
-                </td>
-                <button
-                  onClick={createPDF}
-                  type="button"
-                  className="w-[100px] text-[14px] mt-5 py-2 px-4 border border-[#29abe0] text-[#29abe0] font-semibold"
-                >
-                  PDF
-                </button>
               </tr>
             </tbody>
           </table>
@@ -742,6 +834,33 @@ const AcSchedules = () => {
           </form>
         </div>
       </div>
+      {manuf !== "--Select--" && (
+        <div className="px-5 flex justify-left ">
+          <button
+            onClick={resetCalcs}
+            type="button"
+            className="text-[12px] mx-1 py-0.5 px-3 border border-[#e50000] text-white bg-[#e50000] font-semibold"
+          >
+            RESET
+          </button>
+
+          <button
+            onClick={createPDF}
+            type="button"
+            className="text-[12px] mx-1 py-0.5 px-3 border border-[#29abe0] text-white bg-[#29abe0] font-semibold"
+          >
+            PDF
+          </button>
+
+          <button
+            onClick={createExcel}
+            type="button"
+            className="text-[12px] mx-1 py-0.5 px-3 border border-[#29abe0] text-white bg-[#29abe0] font-semibold"
+          >
+            Excel
+          </button>
+        </div>
+      )}
 
       <div className="flex p-5 flex-col ">
         {manuf == "Software House USTAR008" && (
