@@ -133,6 +133,12 @@ const AcSchedules = () => {
   const [input, setInput] = useState(items_inputs ? items_inputs : reset_i);
   const [output, setOutput] = useState(items_outputs ? items_outputs : reset_o);
   const [manuf, setManuf] = useState(items_controller ? items_controller : "--Select--");
+  const [acpName,setAcpName]=useState({
+    acp_name:"",
+    acp_location:"",
+    acp_model:"",
+    acp_ip:"",
+  })
   
   const [addNewReader, setAddNewReader] = useState({
     id: 1,
@@ -392,11 +398,14 @@ const AcSchedules = () => {
       format: "a3",
     });
     doc.setFontSize(10);
-    // doc.text(`Project Name: ${projectName}`, 14, 16);
+    doc.text(`ACCESS CONTROL PANEL: ${acpName}`, 14, 10);
+    doc.text(`LOCATION: ${acpName}`, 14, 10);
+    doc.text(`MODEL NM: ${acpName}`, 14, 10);
+    doc.text(`IP ADDRESS: ${acpName}`, 14, 10);
     // doc.setFontSize(10);
     // doc.text(`Created: ${date.toLocaleDateString()}`, 14, 22);
     doc.autoTable({
-      margin: { top: 15 },
+      margin: { top: 20 },
       html: "#my-table",
       theme: "striped",
       columnStyles: {
@@ -840,6 +849,8 @@ const AcSchedules = () => {
             reader={reader}
             input={input}
             output={output}
+            acpName={acpName}
+            setAcpName={setAcpName}
           />
         )}
         {manuf == "Software House USTAR016" && (
