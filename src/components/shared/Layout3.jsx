@@ -11,7 +11,7 @@ const Layout = () => {
 	return (
 		<div className="bg-neutral-50  overflow-hidden flex flex-row">
 			<Sidebar />
-				<div className="min-h-0 h-screen overflow-y-scroll">
+				<div className="min-h-0 h-screen w-full overflow-y-scroll">
 					<Outlet />
 				</div>
 			

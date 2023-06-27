@@ -102,7 +102,7 @@ const Battery = () => {
   // console.log(currents);
   useEffect(() => {
     // console.log(items[1].name);
-    if (items.length>1) {
+    if (items) {
       setCurrentAdded(true);
     }
   }, []);

@@ -19,6 +19,7 @@ import "jspdf-autotable";
 import XLSX from "xlsx-js-style";
 
 const AcSchedules = () => {
+  const items_controller = JSON.parse(localStorage.getItem("controller"));
   const items_readers = JSON.parse(localStorage.getItem("readers"));
   const items_inputs = JSON.parse(localStorage.getItem("inputs"));
   const items_outputs = JSON.parse(localStorage.getItem("outputs"));
@@ -67,6 +68,30 @@ const AcSchedules = () => {
     { id: 22, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 23, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 24, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 25, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 26, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 27, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 28, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 29, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 30, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 31, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 32, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 33, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 34, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 35, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 36, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 37, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 38, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 39, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 40, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 41, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 42, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 43, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 44, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 45, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 46, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 47, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 48, lvl: "", device: "", desc: "", type: "", notes: "" },
   ];
 
   const reset_o = [
@@ -86,6 +111,22 @@ const AcSchedules = () => {
     { id: 14, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 15, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 16, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 17, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 18, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 19, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 20, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 21, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 22, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 23, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 24, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 25, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 26, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 27, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 28, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 29, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 30, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 31, lvl: "", device: "", desc: "", type: "", notes: "" },
+    { id: 32, lvl: "", device: "", desc: "", type: "", notes: "" },
   ];
 
   const [reader, setReader] = useState(items_readers ? items_readers : reset_r);
@@ -102,27 +143,35 @@ const AcSchedules = () => {
   });
 
   const resetCalcs = () => {
+    setManuf("");
     setReader(reset_r);
     setInput(reset_i);
     setOutput(reset_o);
-    setAcmPort("ACM#1")
-    setRdrPort("")
-    setRdrPortLabel("CR")
-    setInputPortA("")
-    setInputPortALabel("DC")
-    setInputPortB("")
-    setInputPortBLabel("RX")
-    setOutputPort("")
-    setOutputPortLabel("ES")
+    setAcmPort("ACM#1");
+    setRdrPort("");
+    setRdrPortLabel("CR");
+    setInputPortA("");
+    setInputPortALabel("DC");
+    setInputPortB("");
+    setInputPortBLabel("RX");
+    setOutputPort("");
+    setOutputPortLabel("ES");
     localStorage.setItem("readers", JSON.stringify(reset_r));
     localStorage.setItem("inputs", JSON.stringify(reset_i));
     localStorage.setItem("outputs", JSON.stringify(reset_o));
+    setAddNewReader({
+      id: 1,
+      lvl: " ",
+      device: " ",
+      desc: " ",
+      type: " ",
+      notes: " ",
+    });
   };
 
   const title = "ACCESS CONTROL SCHEDULES";
 
-  const [manuf, setManuf] = useState("--Select--");
-
+  const [manuf, setManuf] = useState(items_controller ? items_controller : "");
 
   const handleMfgChange = (e) => {
     e.preventDefault();
@@ -205,7 +254,7 @@ const AcSchedules = () => {
     // ********************
     // add readers
     let updatedList = reader.map((dev) => {
-      if ((acmPort == "ACM#1")) {
+      if (acmPort == "ACM#1") {
         if (dev.id == rdrPort) {
           return {
             ...dev,
@@ -217,9 +266,8 @@ const AcSchedules = () => {
           };
         }
         return dev;
-      }
-      else{
-        if (dev.id == Number(rdrPort)+8) {
+      } else {
+        if (dev.id == Number(rdrPort) + 8) {
           return {
             ...dev,
             lvl: addNewReader.lvl,
@@ -236,45 +284,85 @@ const AcSchedules = () => {
     // ********************
     // add inputs
     let updatedInputList = input.map((dev) => {
-      if (dev.id == inputPortA) {
-        return {
-          ...dev,
-          lvl: addNewReader.lvl,
-          device: addNewReader.device,
-          desc: addNewReader.desc,
-          notes: addNewReader.notes,
-          type: inputPortALabel,
-        };
+      if (acmPort == "ACM#1") {
+        if (dev.id == inputPortA) {
+          return {
+            ...dev,
+            lvl: addNewReader.lvl,
+            device: addNewReader.device,
+            desc: addNewReader.desc,
+            notes: addNewReader.notes,
+            type: inputPortALabel,
+          };
+        }
+        if (dev.id == inputPortB) {
+          return {
+            ...dev,
+            lvl: addNewReader.lvl,
+            device: addNewReader.device,
+            desc: addNewReader.desc,
+            notes: addNewReader.notes,
+            type: inputPortBLabel,
+          };
+        }
+        
+        return dev;
+      } else {
+        if (dev.id == Number(inputPortA)+24) {
+          return {
+            ...dev,
+            lvl: addNewReader.lvl,
+            device: addNewReader.device,
+            desc: addNewReader.desc,
+            notes: addNewReader.notes,
+            type: inputPortALabel,
+          };
+        }
+        if (dev.id == Number(inputPortB)+24) {
+          return {
+            ...dev,
+            lvl: addNewReader.lvl,
+            device: addNewReader.device,
+            desc: addNewReader.desc,
+            notes: addNewReader.notes,
+            type: inputPortBLabel,
+          };
+        }
+        return dev;
       }
-      if (dev.id == inputPortB) {
-        return {
-          ...dev,
-          lvl: addNewReader.lvl,
-          device: addNewReader.device,
-          desc: addNewReader.desc,
-          notes: addNewReader.notes,
-          type: inputPortBLabel,
-        };
-      }
-
-      return dev;
     });
     setInput(updatedInputList);
     // ********************
     // add outputs
     let updatedOutputList = output.map((dev) => {
-      if (dev.id == outputPort) {
-        return {
-          ...dev,
-          lvl: addNewReader.lvl,
-          device: addNewReader.device,
-          desc: addNewReader.desc,
-          notes: addNewReader.notes,
-          type: outputPortLabel,
-        };
-      }
+      if (acmPort == "ACM#1") {
 
-      return dev;
+        if (dev.id == outputPort) {
+          return {
+            ...dev,
+            lvl: addNewReader.lvl,
+            device: addNewReader.device,
+            desc: addNewReader.desc,
+            notes: addNewReader.notes,
+            type: outputPortLabel,
+          };
+        }
+  
+        return dev;
+      }else{
+        if (dev.id == Number(outputPort)+16) {
+          return {
+            ...dev,
+            lvl: addNewReader.lvl,
+            device: addNewReader.device,
+            desc: addNewReader.desc,
+            notes: addNewReader.notes,
+            type: outputPortLabel,
+          };
+        }
+  
+        return dev;
+      }
     });
     setOutput(updatedOutputList);
   }
@@ -283,11 +371,12 @@ const AcSchedules = () => {
     e.target.value = "";
   };
 
-  useEffect(() => {
+  useEffect(() => {    
+    localStorage.setItem("controller", JSON.stringify(manuf));
     localStorage.setItem("readers", JSON.stringify(reader));
     localStorage.setItem("inputs", JSON.stringify(input));
     localStorage.setItem("outputs", JSON.stringify(output));
-  }, [reader, input, output]);
+  }, [reader, input, output, manuf]);
 
   // *******************************************************
   //  pdf export
@@ -400,11 +489,11 @@ const AcSchedules = () => {
             ADD NEW DOOR/DEVICE:
           </p>
           <form
-            className="flex flex-col gap-3 min-w-full bg-slate-200 p-4"
+            className="flex flex-col gap-3 min-w-full "
             onSubmit={handleAddNewDevice}
           >
-            <div>
-              <table className=" text-sm text-left text-gray-800 ">
+            <div className="inline-block w-[850px] bg-slate-200 p-4">
+              <table className=" text-sm text-left text-gray-800  p-4 ">
                 <thead className="text-xs text-gray-700 bg-slate-200 ">
                   <tr>
                     <th scope="col" className="py-1 ">
@@ -473,9 +562,12 @@ const AcSchedules = () => {
               <table className=" text-sm text-left text-gray-800 mt-2 ">
                 <thead className="text-xs text-gray-700 bg-slate-200 ">
                   <tr>
-                    <th scope="col" className="py-1 " colSpan={1}>
-                      ACM
-                    </th>
+                    {manuf == "Software House USTAR016" && (
+                      <th scope="col" className="py-1 " colSpan={1}>
+                        ACM
+                      </th>
+                    )}
+
                     <th scope="col" className="py-1 " colSpan={2}>
                       Reader Port
                     </th>
@@ -495,21 +587,24 @@ const AcSchedules = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
-                      <select
-                        className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100  mr-4"
-                        type="text"
-                        id="acmPort"
-                        name="acmPort"
-                        value={acmPort}
-                        onChange={handleAcmPortChange}
-                        required
-                      >
-                        {ACM_PORTS.map((rdr) => {
-                          return <option>{rdr}</option>;
-                        })}
-                      </select>
-                    </td>
+                    {manuf == "Software House USTAR016" && (
+                      <td>
+                        <select
+                          className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100  mr-4"
+                          type="text"
+                          id="acmPort"
+                          name="acmPort"
+                          value={acmPort}
+                          onChange={handleAcmPortChange}
+                          required
+                        >
+                          {ACM_PORTS.map((rdr) => {
+                            return <option>{rdr}</option>;
+                          })}
+                        </select>
+                      </td>
+                    )}
+
                     <td>
                       <select
                         className=" py-1 px-2 border border-[#e2e2e2] text-[14px] text-gray-800 hover:bg-slate-100  "
@@ -630,14 +725,16 @@ const AcSchedules = () => {
                         })}
                       </select>
                     </td>
-                    <td>
-                      <button
-                        className=" text-[12px] mx-1 py-0.5 px-3 border border-[#29abe0] text-white bg-[#29abe0] font-semibold "
-                        type="submit"
-                      >
-                        Add to Schedule
-                      </button>
-                    </td>
+                    {manuf !== "--Select--" && (
+                      <td>
+                        <button
+                          className=" text-[12px] mx-1 py-0.5 px-3 border border-[#29abe0] text-white bg-[#29abe0] font-semibold "
+                          type="submit"
+                        >
+                          Add to Schedule
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 </tbody>
               </table>
@@ -646,10 +743,21 @@ const AcSchedules = () => {
         </div>
       </div>
 
-      <div className="flex p-5 flex-col  ">
-        {manuf=="Software House USTAR008"&&<SoftwareHouseUSTAR008 reader={reader} input={input} output={output} />}
-        {manuf=="Software House USTAR016"&&<SoftwareHouseUSTAR016 reader={reader} input={input} output={output} />}
-        
+      <div className="flex p-5 flex-col ">
+        {manuf == "Software House USTAR008" && (
+          <SoftwareHouseUSTAR008
+            reader={reader}
+            input={input}
+            output={output}
+          />
+        )}
+        {manuf == "Software House USTAR016" && (
+          <SoftwareHouseUSTAR016
+            reader={reader}
+            input={input}
+            output={output}
+          />
+        )}
       </div>
     </>
   );

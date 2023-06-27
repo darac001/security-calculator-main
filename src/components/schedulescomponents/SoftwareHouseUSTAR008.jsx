@@ -2,23 +2,23 @@ import React from "react";
 
 const Reader = ({ reader, n, wiegand }) => {
   return (
-    <tr className="px-6  text-center h-2 border border-[#e2e2e2]">
-      <td className="px-6  text-center font-bold h-2 border border-[#e2e2e2]">
+    <tr className="px-2  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center font-bold h-2 border border-[#e2e2e2]">
         {wiegand}
       </td>
-      <td className="px-6  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center h-2 border border-[#e2e2e2]">
         {reader[n].lvl}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n].device}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n].desc}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n].type}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {reader[n].notes}
       </td>
     </tr>
@@ -26,23 +26,23 @@ const Reader = ({ reader, n, wiegand }) => {
 };
 const Input = ({ input, n, inp }) => {
   return (
-    <tr className="px-6  text-center h-2 border border-[#e2e2e2]">
-      <td className="px-6  text-center font-bold h-2 border border-[#e2e2e2]">
+    <tr className="px-2  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center font-bold h-2 border border-[#e2e2e2]">
         {inp}
       </td>
-      <td className="px-6  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center h-2 border border-[#e2e2e2]">
         {input[n].lvl}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n].device}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n].desc}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n].type}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {input[n].notes}
       </td>
     </tr>
@@ -50,23 +50,23 @@ const Input = ({ input, n, inp }) => {
 };
 const Output = ({ output, n, outp }) => {
   return (
-    <tr className="px-6  text-center h-2 border border-[#e2e2e2]">
-      <td className="px-6  text-center font-bold h-2 border border-[#e2e2e2]">
+    <tr className="px-2  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center font-bold h-2 border border-[#e2e2e2]">
         {outp}
       </td>
-      <td className="px-6  text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2  text-center h-2 border border-[#e2e2e2]">
         {output[n].lvl}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n].device}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n].desc}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n].type}
       </td>
-      <td className="px-6 text-center h-2 border border-[#e2e2e2]">
+      <td className="px-2 text-center h-2 border border-[#e2e2e2]">
         {output[n].notes}
       </td>
     </tr>
@@ -76,14 +76,14 @@ const Output = ({ output, n, outp }) => {
 const SoftwareHouseUSTAR008 = ({ reader,input,output }) => {
   return (
     <>
-      {/* <div>USTAR008</div> */}
-      <table id="my-table" className="w-full text-sm text-left text-gray-800 ">
+    
+      <table id="my-table" className="w-1/2 text-sm text-left text-gray-800 ">
         <thead className="text-xs text-gray-700 bg-gray-50  ">
           <tr className="px-6 py-2 text-center text-white bg-slate-400 ">
             <th
               scope="col"
               colSpan={6}
-              className="px-6 py-1 text-lg text-left h-2"
+              className="px-2 py-1 text-lg text-left h-2 border border-[#e2e2e2]"
             >
               ACM#1
             </th>
@@ -92,41 +92,41 @@ const SoftwareHouseUSTAR008 = ({ reader,input,output }) => {
             <th
               scope="col"
               colSpan={1}
-              className="px-6 py-1 text-center h-2 border border-[#e2e2e2]"
+              className="px-2 py-1 text-center h-2 border border-[#e2e2e2] "
             >
               TERMINAL
             </th>
             <th
               scope="col"
-              className="px-6 py-1 text-center h-2 border border-[#e2e2e2]"
+              className="px-2 py-1 text-center h-2 border border-[#e2e2e2] "
               colSpan={1}
             >
               LEVEL
             </th>
             <th
               scope="col"
-              className="px-6 py-1 text-center h-2 border border-[#e2e2e2]"
+              className="px-2 py-1 text-center h-2 border border-[#e2e2e2] "
               colSpan={1}
             >
               DEVICE/DOOR ID
             </th>
             <th
               scope="col"
-              className="px-6 py-1 text-center h-2 border border-[#e2e2e2]"
+              className="px-2 py-1 text-center h-2 border border-[#e2e2e2] w-[300px]"
               colSpan={1}
             >
               DESCRIPTION
             </th>
             <th
               scope="col"
-              className="px-6 py-1 text-center h-2 border border-[#e2e2e2]"
+              className="px-2 py-1 text-center h-2 border border-[#e2e2e2] "
               colSpan={1}
             >
               DEVICE TYPE
             </th>
             <th
               scope="col"
-              className="px-6 py-1 text-center h-2 border border-[#e2e2e2]"
+              className="px-2 py-1 text-center h-2 border border-[#e2e2e2] w-[100px]"
               colSpan={1}
             >
               NOTES
@@ -134,11 +134,11 @@ const SoftwareHouseUSTAR008 = ({ reader,input,output }) => {
           </tr>
         </thead>
         <tbody className="text-[12px]">
-          <tr className="px-6  text-left h-2 border border-[#e2e2e2]">
+          <tr className="px-2  text-left h-2 border border-[#e2e2e2]">
             <th
               scope="col"
               colSpan={7}
-              className="px-6  text-left h-2 border border-[#e2e2e2] text-white bg-slate-400"
+              className="px-2  text-left h-2 border border-[#e2e2e2] text-white bg-slate-400"
             >
               READERS
             </th>
@@ -151,11 +151,11 @@ const SoftwareHouseUSTAR008 = ({ reader,input,output }) => {
           <Reader reader={reader} n="5" wiegand="WIEGAND6" />
           <Reader reader={reader} n="6" wiegand="WIEGAND7" />
           <Reader reader={reader} n="7" wiegand="WIEGAND8" />
-          <tr className="px-6  text-left h-2 border border-[#e2e2e2]">
+          <tr className="px-2  text-left h-2 border border-[#e2e2e2]">
             <th
               scope="col"
               colSpan={7}
-              className="px-6  text-left h-2 border border-[#e2e2e2] text-white bg-slate-400"
+              className="px-2  text-left h-2 border border-[#e2e2e2] text-white bg-slate-400"
             >
               INPUTS
             </th>
@@ -184,11 +184,11 @@ const SoftwareHouseUSTAR008 = ({ reader,input,output }) => {
             <Input input={input} n="21" inp="IN22"/>
             <Input input={input} n="22" inp="IN23"/>
             <Input input={input} n="23" inp="IN24"/>
-          <tr className="px-6  text-left h-2 border border-[#e2e2e2]">
+          <tr className="px-2  text-left h-2 border border-[#e2e2e2]">
             <th
               scope="col"
               colSpan={7}
-              className="px-6  text-left h-2 border border-[#e2e2e2] text-white bg-slate-400"
+              className="px-2  text-left h-2 border border-[#e2e2e2] text-white bg-slate-400"
             >
               OUTPUTS
             </th>
