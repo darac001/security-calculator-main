@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import Header from "./Header";
 import SoftwareHouseUSTAR008 from "./schedulescomponents/SoftwareHouseUSTAR008";
 import SoftwareHouseUSTAR016 from "./schedulescomponents/SoftwareHouseUSTAR016";
@@ -128,11 +128,12 @@ const AcSchedules = () => {
     { id: 31, lvl: "", device: "", desc: "", type: "", notes: "" },
     { id: 32, lvl: "", device: "", desc: "", type: "", notes: "" },
   ];
-
+  
   const [reader, setReader] = useState(items_readers ? items_readers : reset_r);
   const [input, setInput] = useState(items_inputs ? items_inputs : reset_i);
   const [output, setOutput] = useState(items_outputs ? items_outputs : reset_o);
-
+  const [manuf, setManuf] = useState(items_controller ? items_controller : "--Select--");
+  
   const [addNewReader, setAddNewReader] = useState({
     id: 1,
     lvl: " ",
@@ -169,10 +170,6 @@ const AcSchedules = () => {
     });
   };
 
-
-  const title = "ACCESS CONTROL SCHEDULES";
-
-  const [manuf, setManuf] = useState(items_controller ? items_controller : "");
 
   const handleMfgChange = (e) => {
     e.preventDefault();
@@ -371,46 +368,21 @@ const AcSchedules = () => {
     e.target.value = "";
   };
 
+
+
+
   useEffect(() => {
     localStorage.setItem("controller", JSON.stringify(manuf));
     localStorage.setItem("readers", JSON.stringify(reader));
     localStorage.setItem("inputs", JSON.stringify(input));
     localStorage.setItem("outputs", JSON.stringify(output));
+    
   }, [reader, input, output, manuf]);
 
 
 
 
 
-  const clearWhenManufChanged = () => {
-    
-    setReader(reset_r);
-    setInput(reset_i);
-    setOutput(reset_o);
-    setAcmPort("ACM#1");
-    setRdrPort("");
-    setRdrPortLabel("CR");
-    setInputPortA("");
-    setInputPortALabel("DC");
-    setInputPortB("");
-    setInputPortBLabel("RX");
-    setOutputPort("");
-    setOutputPortLabel("ES");
-    localStorage.setItem("readers", JSON.stringify(reset_r));
-    localStorage.setItem("inputs", JSON.stringify(reset_i));
-    localStorage.setItem("outputs", JSON.stringify(reset_o));
-    setAddNewReader({
-      id: 1,
-      lvl: " ",
-      device: " ",
-      desc: " ",
-      type: " ",
-      notes: " ",
-    });
-  };
-  useEffect(()=>{
-    clearWhenManufChanged()
-  },[manuf])
   // *******************************************************
   //  pdf export
 

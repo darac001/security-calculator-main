@@ -15,6 +15,12 @@ import { ReactComponent as WiresIcon } from '../assets/icon-wires.svg'
 import { ReactComponent as TableIcon } from '../assets/icon-table.svg'
 
 export const DASHBOARD_SIDEBAR_LINKS = [
+		{
+		key: '1',
+		label: 'Schedules - In progress!',
+		path: '/acschedules',
+		icon: <TableIcon />
+	},
 	{
 		key: '2',
 		label: 'Battery',
@@ -22,24 +28,20 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		icon: <BatteryIcon/>
 	},
 	{
-		key: '1',
+		key: '3',
 		label: 'Voltage Drop',
 		path: '/voltagedrop',
 		icon: <DCVoltageIcon/>
 	},
 
 	{
-		key: '3',
+		key: '4',
 		label: 'Wire Size',
 		path: '/wire',
 		icon: <WiresIcon />
 	},
-	{
-		key: '4',
-		label: 'Schedules - In progress!',
-		path: '/acschedules',
-		icon: <TableIcon />
-	},
+	
+
 
 ]
 
