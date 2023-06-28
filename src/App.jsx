@@ -12,10 +12,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="voltagedrop" element={<VoltageDrop />}>
+        <Route path="/voltagedrop" element={<Layout />}>
           {/* <Route path="voltagedrop" element={<VoltageDrop />} /> */}
 
-          <Route path="wire" element={<WireSize />} />
+          {/* <Route path="wire" element={<WireSize />} /> */}
         </Route>
         <Route path="/" element={<Layout2 />}>
           <Route index element={<Battery />} />
@@ -23,7 +23,7 @@ function App() {
         </Route>
         <Route path="/" element={<Layout3 />}>
           
-          <Route path="acschedules" index element={<AcSchedules />} />
+          <Route path="/acschedules" index element={<AcSchedules />} />
         </Route>
       </Routes>
     </Router>
