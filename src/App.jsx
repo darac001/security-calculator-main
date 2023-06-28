@@ -13,9 +13,9 @@ function App() {
     <Router>
       <Routes>
         {/* <Route path="/voltagedrop" element={<Layout />}> */}
-          <Route path="voltagedrop" element={<VoltageDrop />} />
+          <Route path="/voltagedrop" element={<VoltageDrop />} />
 
-          <Route path="wire" element={<WireSize />} />
+          <Route path="/wire" element={<WireSize />} />
         {/* </Route> */}
         <Route path="/" element={<Layout2 />}/>
           {/* <Route index element={<Battery />} />
