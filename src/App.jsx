@@ -12,19 +12,19 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/voltagedrop" element={<Layout />}>
-          {/* <Route path="voltagedrop" element={<VoltageDrop />} /> */}
+        {/* <Route path="/voltagedrop" element={<Layout />}> */}
+          <Route path="voltagedrop" element={<VoltageDrop />} />
 
-          {/* <Route path="wire" element={<WireSize />} /> */}
-        </Route>
-        <Route path="/" element={<Layout2 />}>
-          <Route index element={<Battery />} />
+          <Route path="wire" element={<WireSize />} />
+        {/* </Route> */}
+        <Route path="/" element={<Layout2 />}/>
+          {/* <Route index element={<Battery />} />
     
-        </Route>
-        <Route path="/" element={<Layout3 />}>
+        </Route> */}
+        {/* <Route path="/" element={<Layout3 />}> */}
           
-          <Route path="/acschedules" index element={<AcSchedules />} />
-        </Route>
+          {/* <Route path="acschedules" index element={<AcSchedules />} />
+        </Route> */}
       </Routes>
     </Router>
   );
