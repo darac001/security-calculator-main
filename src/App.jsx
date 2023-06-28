@@ -12,8 +12,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="voltagedrop" element={<VoltageDrop />} />
+        <Route path="voltagedrop" element={<VoltageDrop />}>
+          {/* <Route path="voltagedrop" element={<VoltageDrop />} /> */}
 
           <Route path="wire" element={<WireSize />} />
         </Route>
