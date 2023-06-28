@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/shared/Layout";
 import VoltageDrop from "./components/VoltageDrop";
 import Battery from "./components/Battery";
@@ -10,23 +10,23 @@ import Layout3 from "./components/shared/Layout3";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        {/* <Route path="/voltagedrop" element={<Layout />}> */}
-          <Route path="/voltagedrop" element={<VoltageDrop />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="voltagedrop" element={<VoltageDrop />} />
 
-          <Route path="/wire" element={<WireSize />} />
-        {/* </Route> */}
-        <Route path="/" element={<Layout2 />}/>
-          {/* <Route index element={<Battery />} />
+          <Route path="wire" element={<WireSize />} />
+        </Route>
+        <Route path="/" element={<Layout2 />}>
+          <Route index element={<Battery />} />
     
-        </Route> */}
-        {/* <Route path="/" element={<Layout3 />}> */}
+        </Route>
+        <Route path="/" element={<Layout3 />}>
           
-          {/* <Route path="acschedules" index element={<AcSchedules />} />
-        </Route> */}
+          <Route path="acschedules" index element={<AcSchedules />} />
+        </Route>
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
