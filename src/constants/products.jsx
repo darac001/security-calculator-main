@@ -4,6 +4,7 @@ export const MANUFACTURERS=[
 	"HID",
 	"Kantech",
 	"SoftwareHouse",
+	"Bosch",
 ]
 
 export const PRODUCTS={

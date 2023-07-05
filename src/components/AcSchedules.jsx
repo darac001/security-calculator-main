@@ -18,127 +18,20 @@ import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import XLSX from "xlsx-js-style";
 
+import { reset_r,reset_i,reset_o,reset_name } from "../constants/objects";
+
 const AcSchedules = () => {
   const items_controller = JSON.parse(localStorage.getItem("controller"));
   const items_readers = JSON.parse(localStorage.getItem("readers"));
   const items_inputs = JSON.parse(localStorage.getItem("inputs"));
   const items_outputs = JSON.parse(localStorage.getItem("outputs"));
 
-  const reset_r = [
-    { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 3, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 4, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 5, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 6, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 7, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 8, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 9, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 10, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 11, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 12, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 13, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 14, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 15, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 16, lvl: "", device: "", desc: "", type: "", notes: "" },
-  ];
-
-  const reset_i = [
-    { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 3, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 4, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 5, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 6, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 7, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 8, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 9, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 10, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 11, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 12, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 13, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 14, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 15, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 16, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 17, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 18, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 19, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 20, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 21, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 22, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 23, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 24, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 25, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 26, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 27, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 28, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 29, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 30, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 31, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 32, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 33, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 34, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 35, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 36, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 37, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 38, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 39, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 40, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 41, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 42, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 43, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 44, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 45, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 46, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 47, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 48, lvl: "", device: "", desc: "", type: "", notes: "" },
-  ];
-
-  const reset_o = [
-    { id: 1, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 2, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 3, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 4, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 5, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 6, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 7, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 8, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 9, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 10, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 11, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 12, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 13, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 14, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 15, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 16, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 17, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 18, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 19, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 20, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 21, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 22, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 23, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 24, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 25, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 26, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 27, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 28, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 29, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 30, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 31, lvl: "", device: "", desc: "", type: "", notes: "" },
-    { id: 32, lvl: "", device: "", desc: "", type: "", notes: "" },
-  ];
   
   const [reader, setReader] = useState(items_readers ? items_readers : reset_r);
   const [input, setInput] = useState(items_inputs ? items_inputs : reset_i);
   const [output, setOutput] = useState(items_outputs ? items_outputs : reset_o);
   const [manuf, setManuf] = useState(items_controller ? items_controller : "--Select--");
-  const [acpName,setAcpName]=useState({
-    acp_name:"",
-    acp_location:"",
-    acp_model:"",
-    acp_ip:"",
-  })
+  const [acpName,setAcpName]=useState(reset_name)
   
   const [addNewReader, setAddNewReader] = useState({
     id: 1,
@@ -174,6 +67,7 @@ const AcSchedules = () => {
       type: " ",
       notes: " ",
     });
+    setAcpName(reset_name)
   };
 
 
@@ -397,15 +291,16 @@ const AcSchedules = () => {
       orientation: "landscape",
       format: "a3",
     });
-    doc.setFontSize(10);
-    doc.text(`ACCESS CONTROL PANEL: ${acpName}`, 14, 10);
-    doc.text(`LOCATION: ${acpName}`, 14, 10);
-    doc.text(`MODEL NM: ${acpName}`, 14, 10);
-    doc.text(`IP ADDRESS: ${acpName}`, 14, 10);
+    doc.setFontSize(8);
+    doc.text(`ACCESS CONTROL PANEL: ${acpName.acp_name}`, 14, 8);
+    doc.text(`LOCATION: ${acpName.acp_location}`, 14, 12);
+    let manufacturer = manuf.toUpperCase()
+    doc.text(`MODEL: ${manufacturer}.`, 14, 16);
+    doc.text(`IP ADDRESS: ${acpName.acp_ip}`, 14, 20);
     // doc.setFontSize(10);
     // doc.text(`Created: ${date.toLocaleDateString()}`, 14, 22);
     doc.autoTable({
-      margin: { top: 20 },
+      margin: { top: 22 },
       html: "#my-table",
       theme: "striped",
       columnStyles: {
@@ -413,19 +308,37 @@ const AcSchedules = () => {
           columnWidth: 20,
         },
         1: {
-          columnWidth: 15,
+          columnWidth: 11,
         },
         2: {
-          columnWidth: 30,
+          columnWidth: 25,
         },
         3: {
           columnWidth: 50,
         },
         4: {
-          columnWidth: 25,
+          columnWidth: 20,
         },
         5: {
-          columnWidth: 40,
+          columnWidth: 35,
+        },
+        6: {
+          columnWidth: 20,
+        },
+        7: {
+          columnWidth: 11,
+        },
+        8: {
+          columnWidth: 25,
+        },
+        9: {
+          columnWidth: 50,
+        },
+        10: {
+          columnWidth: 20,
+        },
+        11: {
+          columnWidth: 35,
         },
       },
 
@@ -441,11 +354,11 @@ const AcSchedules = () => {
 
       headStyles: {
         valign: "middle",
-        halign: "left",
+        halign: "center",
         fillColor: [220, 220, 220],
         textColor: [0, 0, 0],
       },
-      bodyStyles: { valign: "middle", halign: "left", cellWidth: "50" },
+      bodyStyles: { valign: "middle", halign: "center", cellWidth: "50" },
     });
 
     doc.save("project.pdf");
@@ -457,14 +370,20 @@ const AcSchedules = () => {
   const createExcel = () => {
     const new_workbook = XLSX.utils.book_new();
     const merge = [
-      { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } },
-      { s: { r: 0, c: 6 }, e: { r: 0, c: 11 } },
-      { s: { r: 2, c: 0 }, e: { r: 2, c: 5 } },
-      { s: { r: 2, c: 6 }, e: { r: 2, c: 11 } },
-      { s: { r: 11, c: 0 }, e: { r: 11, c: 5 } },
-      { s: { r: 11, c: 6 }, e: { r: 11, c: 11 } },
-      { s: { r: 36, c: 0 }, e: { r: 36, c: 5 } },
-      { s: { r: 36, c: 6 }, e: { r: 36, c: 11 } },
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 1 } },
+      { s: { r: 0, c: 2 }, e: { r: 0, c: 5 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 1 } },
+      { s: { r: 1, c: 2 }, e: { r: 1, c: 5 } },
+      { s: { r: 2, c: 0 }, e: { r: 2, c: 1 } },
+      { s: { r: 2, c: 2 }, e: { r: 2, c: 5 } },
+      { s: { r: 3, c: 0 }, e: { r: 3, c: 5 } },
+      { s: { r: 3, c: 6 }, e: { r: 3, c: 11 } },
+      { s: { r: 5, c: 0 }, e: { r: 5, c: 5 } },
+      { s: { r: 5, c: 6 }, e: { r: 5, c: 11 } },
+      { s: { r: 14, c: 0 }, e: { r: 14, c: 5 } },
+      { s: { r: 14, c: 6 }, e: { r: 14, c: 11 } },
+      { s: { r: 39, c: 0 }, e: { r: 39, c: 5 } },
+      { s: { r: 39, c: 6 }, e: { r: 39, c: 11 } },
     ];
 
     let tbl1 = document.getElementById("my-table");
@@ -473,10 +392,9 @@ const AcSchedules = () => {
 
     let a = XLSX.utils.sheet_to_json(worksheet_tmp1, { skipHeader: true });
 
-    // a = a.concat("").concat(b);
 
     let worksheet = XLSX.utils.json_to_sheet(a, {
-      origin: 1,
+      origin: 4,
       skipHeader: true,
     });
     worksheet["!merges"] = merge;
@@ -503,18 +421,34 @@ const AcSchedules = () => {
     //   { hpt: 20 },
     // ];
 
+    XLSX.utils.sheet_add_aoa(
+      worksheet,
+      [["ACCESS CONTROL PANEL:", "",`${acpName.acp_name}`]],
+      { origin: 0 }
+    );
+    XLSX.utils.sheet_add_aoa(
+      worksheet,
+      [["LOCATION:", "",`${acpName.acp_location}`]],
+      { origin: 1 }
+    );
+    XLSX.utils.sheet_add_aoa(
+      worksheet,
+      [["IP ADDRESS/MAC ADDRESS:", "",`${acpName.acp_ip}`]],
+      { origin: 2 }
+    );
+
     if (manuf == "Software House USTAR008") {
       XLSX.utils.sheet_add_aoa(
         worksheet,
         [["ACM#1", "", "", "", "", "",]],
-        { origin: 0 }
+        { origin: 3 }
       );
     }
     if (manuf == "Software House USTAR016") {
       XLSX.utils.sheet_add_aoa(
         worksheet,
         [["ACM#1", "", "", "", "", "", "ACM#2", "", "", "", "", ""]],
-        { origin: 0 }
+        { origin: 3 }
       );
     }
 
@@ -858,6 +792,8 @@ const AcSchedules = () => {
             reader={reader}
             input={input}
             output={output}
+            acpName={acpName}
+            setAcpName={setAcpName}
           />
         )}
       </div>

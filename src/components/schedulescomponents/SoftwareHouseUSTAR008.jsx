@@ -87,55 +87,43 @@ const SoftwareHouseUSTAR008 = ({ reader, input, output,acpName,setAcpName }) => 
     <>
     <div className="flex w-1/2">
 
-      <div className="flex w-1/2 px-2 items-center ">
-        <label className="w-full text-[12px] font-bold">ACCESS CONTROL PANEL:</label>
+      <div className="flex px-2 items-center">
+        <label className="text-[12px] font-bold mr-5">ACCESS CONTROL PANEL:</label>
         <input
           type="text"
           id="acp_name"
           name="acp_name"
           value={acpName.acp_name}
           onChange={handleInputChange}
-          placeholder="ACP Name"
-          className="w-full mb-1 py-1 px-4 text-[12px] border border-[#e2e2e2] placeholder-gray-400 "
+          // placeholder="ACP Name"
+          className="w-[150px] mb-1 py-1 px-4 text-[12px] border border-[#e2e2e2] placeholder-gray-400 "
         />       
       </div>
       <div className="flex items-center w-1/2  px-2">
-        <p className="w-full text-[12px] font-bold">LOCATION:</p>
+        <p className="text-[12px] font-bold mr-1">LOCATION:</p>
         <input
           type="text"
-          id="acp_name"
-          name="acp_name"
-          value={acpName.acp_name}
+          id="acp_location"
+          name="acp_location"
+          value={acpName.acp_location}
           onChange={handleInputChange}
-          placeholder="ACP Name"
-          className="w-full  mb-1 py-1 px-4 text-[12px] border border-[#e2e2e2] placeholder-gray-400 "
+          // placeholder="ACP Name"
+          className="w-[150px]  mb-1 py-1 px-4 text-[12px] border border-[#e2e2e2] placeholder-gray-400 "
         />       
       </div>
     </div>
     <div className="flex w-1/2">
 
-      <div className="flex gap-3 px-2 w-1/2 items-center">
-        <p className="text-[12px] font-bold">MODEL:</p>
+      <div className="flex items-center w-1/2  px-2">
+        <p className="text-[12px] font-bold mr-2">IP ADDRESS/MAC ADDRESS:</p>
         <input
           type="text"
-          id="acp_name"
-          name="acp_name"
-          value={acpName.acp_name}
+          id="acp_ip"
+          name="acp_ip"
+          value={acpName.acp_ip}
           onChange={handleInputChange}
-          placeholder="ACP Name"
-          className=" mb-1 py-1 px-4 text-[12px] border border-[#e2e2e2] placeholder-gray-400 "
-        />       
-      </div>
-      <div className="flex items-center w-1/2 gap-3 px-2">
-        <p className="text-[12px] font-bold">ACCESS CONTROL PANEL:</p>
-        <input
-          type="text"
-          id="acp_name"
-          name="acp_name"
-          value={acpName.acp_name}
-          onChange={handleInputChange}
-          placeholder="ACP Name"
-          className=" mb-1 py-1 px-4 text-[12px] border border-[#e2e2e2] placeholder-gray-400 "
+          // placeholder="ACP Name"
+          className="w-[150px] mb-1 py-1 px-4 text-[12px] border border-[#e2e2e2] placeholder-gray-400 "
         />       
       </div>
     </div>
