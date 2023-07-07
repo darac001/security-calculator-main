@@ -1,7 +1,11 @@
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Header from "./Header";
 import SoftwareHouseUSTAR008 from "./schedulescomponents/SoftwareHouseUSTAR008";
 import SoftwareHouseUSTAR016 from "./schedulescomponents/SoftwareHouseUSTAR016";
+import SoftwareHouseESTAR001 from "./schedulescomponents/SoftwareHouseESTAR001";
+import SoftwareHouseESTAR002 from "./schedulescomponents/SoftwareHouseESTAR002";
+import SoftwareHouseESTAR004 from "./schedulescomponents/SoftwareHouseESTAR004";
+import SoftwareHouseESTAR004RM from "./schedulescomponents/SoftwareHouseESTAR004RM";
 import { CONTROLLERS } from "../constants/schedulescontrollers";
 import {
   ACM_PORTS,
@@ -12,13 +16,14 @@ import {
   OUTPUT_LABELS,
   INPUT_A_LABELS,
   INPUT_B_LABELS,
-} from "../constants/portsUSTAR008";
+} from "../constants/ports";
 
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import XLSX from "xlsx-js-style";
 
-import { reset_r,reset_i,reset_o,reset_name } from "../constants/objects";
+import { reset_r, reset_i, reset_o, reset_name } from "../constants/objects";
+import SoftwareHouseI8 from "./schedulescomponents/SoftwareHouseI8";
 
 const AcSchedules = () => {
   const items_controller = JSON.parse(localStorage.getItem("controller"));
@@ -26,13 +31,21 @@ const AcSchedules = () => {
   const items_inputs = JSON.parse(localStorage.getItem("inputs"));
   const items_outputs = JSON.parse(localStorage.getItem("outputs"));
 
-  
   const [reader, setReader] = useState(items_readers ? items_readers : reset_r);
   const [input, setInput] = useState(items_inputs ? items_inputs : reset_i);
   const [output, setOutput] = useState(items_outputs ? items_outputs : reset_o);
-  const [manuf, setManuf] = useState(items_controller ? items_controller : "--Select--");
-  const [acpName,setAcpName]=useState(reset_name)
-  
+  const [manuf, setManuf] = useState(
+    items_controller ? items_controller : "--Select--"
+  );
+  const [acpName, setAcpName] = useState(reset_name);
+
+  const [cntrlPrtQty, setCntrlPrtQty] = useState({
+    rdr: 0,
+    in: 0,
+    out: 0,
+    rs485: false,
+  });
+
   const [addNewReader, setAddNewReader] = useState({
     id: 1,
     lvl: " ",
@@ -67,15 +80,29 @@ const AcSchedules = () => {
       type: " ",
       notes: " ",
     });
-    setAcpName(reset_name)
+    setAcpName(reset_name);
   };
-
 
   const handleMfgChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     setManuf(e.target.value);
   };
+
+  useEffect(() => {
+    let prts = CONTROLLERS.filter((c) => {
+      return c.name == manuf;
+    });
+    // console.log(prts[0].readers);
+    setCntrlPrtQty({
+      ...cntrlPrtQty,
+      rdr: prts[0].readers,
+      in: prts[0].inputs,
+      out: prts[0].outputs,
+      rs485: prts[0].rs485,
+    });
+  }, [manuf]);
+
   const [rdrPort, setRdrPort] = useState("--Select--");
   const [rdrPortLabel, setRdrPortLabel] = useState("CR");
   const [inputPortA, setInputPortA] = useState("--Select--");
@@ -268,20 +295,12 @@ const AcSchedules = () => {
     e.target.value = "";
   };
 
-
-
-
   useEffect(() => {
     localStorage.setItem("controller", JSON.stringify(manuf));
     localStorage.setItem("readers", JSON.stringify(reader));
     localStorage.setItem("inputs", JSON.stringify(input));
     localStorage.setItem("outputs", JSON.stringify(output));
-    
   }, [reader, input, output, manuf]);
-
-
-
-
 
   // *******************************************************
   //  pdf export
@@ -294,9 +313,13 @@ const AcSchedules = () => {
     doc.setFontSize(8);
     doc.text(`ACCESS CONTROL PANEL: ${acpName.acp_name}`, 14, 8);
     doc.text(`LOCATION: ${acpName.acp_location}`, 14, 12);
-    let manufacturer = manuf.toUpperCase()
-    doc.text(`MODEL: ${manufacturer}.`, 14, 16);
-    doc.text(`IP ADDRESS: ${acpName.acp_ip}`, 14, 20);
+    let manufacturer = manuf.toUpperCase();
+    doc.text(`MODEL: ${manufacturer}`, 14, 16);
+    if (cntrlPrtQty.rs485) {
+      doc.text(`RS485 PORT/ADDRESS: ${acpName.acp_address}`, 14, 20);
+    } else {
+      doc.text(`IP ADDRESS: ${acpName.acp_ip}`, 14, 20);
+    }
     // doc.setFontSize(10);
     // doc.text(`Created: ${date.toLocaleDateString()}`, 14, 22);
     doc.autoTable({
@@ -368,6 +391,7 @@ const AcSchedules = () => {
   // excel export
 
   const createExcel = () => {
+    let manufacturer = manuf.toUpperCase();
     const new_workbook = XLSX.utils.book_new();
     const merge = [
       { s: { r: 0, c: 0 }, e: { r: 0, c: 1 } },
@@ -376,14 +400,16 @@ const AcSchedules = () => {
       { s: { r: 1, c: 2 }, e: { r: 1, c: 5 } },
       { s: { r: 2, c: 0 }, e: { r: 2, c: 1 } },
       { s: { r: 2, c: 2 }, e: { r: 2, c: 5 } },
-      { s: { r: 3, c: 0 }, e: { r: 3, c: 5 } },
-      { s: { r: 3, c: 6 }, e: { r: 3, c: 11 } },
-      { s: { r: 5, c: 0 }, e: { r: 5, c: 5 } },
-      { s: { r: 5, c: 6 }, e: { r: 5, c: 11 } },
-      { s: { r: 14, c: 0 }, e: { r: 14, c: 5 } },
-      { s: { r: 14, c: 6 }, e: { r: 14, c: 11 } },
-      { s: { r: 39, c: 0 }, e: { r: 39, c: 5 } },
-      { s: { r: 39, c: 6 }, e: { r: 39, c: 11 } },
+      { s: { r: 3, c: 0 }, e: { r: 3, c: 1 } },
+      { s: { r: 3, c: 2 }, e: { r: 3, c: 5 } },
+      { s: { r: 4, c: 0 }, e: { r: 4, c: 5 } },
+      { s: { r: 4, c: 6 }, e: { r: 4, c: 11 } },
+      // { s: { r: 5, c: 0 }, e: { r: 5, c: 5 } },
+      // { s: { r: 5, c: 6 }, e: { r: 5, c: 11 } },
+      // { s: { r: 14, c: 0 }, e: { r: 14, c: 5 } },
+      // { s: { r: 14, c: 6 }, e: { r: 14, c: 11 } },
+      // { s: { r: 39, c: 0 }, e: { r: 39, c: 5 } },
+      // { s: { r: 39, c: 6 }, e: { r: 39, c: 11 } },
     ];
 
     let tbl1 = document.getElementById("my-table");
@@ -392,9 +418,8 @@ const AcSchedules = () => {
 
     let a = XLSX.utils.sheet_to_json(worksheet_tmp1, { skipHeader: true });
 
-
     let worksheet = XLSX.utils.json_to_sheet(a, {
-      origin: 4,
+      origin: 5,
       skipHeader: true,
     });
     worksheet["!merges"] = merge;
@@ -423,35 +448,67 @@ const AcSchedules = () => {
 
     XLSX.utils.sheet_add_aoa(
       worksheet,
-      [["ACCESS CONTROL PANEL:", "",`${acpName.acp_name}`]],
+      [["ACCESS CONTROL PANEL:", "", `${acpName.acp_name}`]],
       { origin: 0 }
     );
     XLSX.utils.sheet_add_aoa(
       worksheet,
-      [["LOCATION:", "",`${acpName.acp_location}`]],
+      [["LOCATION:", "", `${acpName.acp_location}`]],
       { origin: 1 }
     );
-    XLSX.utils.sheet_add_aoa(
-      worksheet,
-      [["IP ADDRESS/MAC ADDRESS:", "",`${acpName.acp_ip}`]],
-      { origin: 2 }
-    );
+    XLSX.utils.sheet_add_aoa(worksheet, [["MODEL:", "", `${manufacturer}`]], {
+      origin: 2,
+    });
 
-    if (manuf == "Software House USTAR008") {
+    if (cntrlPrtQty.rs485) {
       XLSX.utils.sheet_add_aoa(
         worksheet,
-        [["ACM#1", "", "", "", "", "",]],
+        [["RS485 PORT/ADDRESS:", "", `${acpName.acp_address}`]],
         { origin: 3 }
       );
+    } else {
+      XLSX.utils.sheet_add_aoa(
+        worksheet,
+        [["IP ADDRESS/MAC ADDRESS:", "", `${acpName.acp_ip}`]],
+        { origin: 3 }
+      );
+    }
+
+    if (manuf == "Software House USTAR008") {
+      XLSX.utils.sheet_add_aoa(worksheet, [["ACM#1", "", "", "", "", ""]], {
+        origin: 4,
+      });
     }
     if (manuf == "Software House USTAR016") {
       XLSX.utils.sheet_add_aoa(
         worksheet,
         [["ACM#1", "", "", "", "", "", "ACM#2", "", "", "", "", ""]],
-        { origin: 3 }
+        { origin: 4 }
       );
     }
-
+    if (
+      manuf == "Software House ESTAR001" ||
+      manuf == "Software House ESTAR002" ||
+      manuf == "Software House ESTAR004" ||
+      manuf == "Software House ESTAR004-RM"
+    ) {
+      XLSX.utils.sheet_add_aoa(
+        worksheet,
+        [["ISTAR EDGE", "", "", "", "", ""]],
+        {
+          origin: 4,
+        }
+      );
+    }
+    if (manuf == "Software House I8") {
+      XLSX.utils.sheet_add_aoa(
+        worksheet,
+        [["INPUT MODULE I8", "", "", "", "", ""]],
+        {
+          origin: 4,
+        }
+      );
+    }
 
     // worksheet["!cols"] = [{ s: { font: { bold: true, color: { rgb: "AA4A44" } } } }];
 
@@ -484,7 +541,7 @@ const AcSchedules = () => {
                     required
                   >
                     {CONTROLLERS.map((cnt) => {
-                      return <option>{cnt}</option>;
+                      return <option>{cnt.name}</option>;
                     })}
                   </select>
                 </td>
@@ -622,9 +679,11 @@ const AcSchedules = () => {
                         onChange={handleRdrPortChange}
                         required
                       >
-                        {READER_PORTS.map((rdr) => {
-                          return <option>{rdr}</option>;
-                        })}
+                        {READER_PORTS.slice(0, cntrlPrtQty.rdr + 1).map(
+                          (rdr) => {
+                            return <option>{rdr}</option>;
+                          }
+                        )}
                       </select>
                     </td>
                     <td>
@@ -652,7 +711,7 @@ const AcSchedules = () => {
                         onChange={handleInputPortAChange}
                         required
                       >
-                        {INPUT_PORTS.map((inp) => {
+                        {INPUT_PORTS.slice(0, cntrlPrtQty.in + 1).map((inp) => {
                           return <option>{inp}</option>;
                         })}
                       </select>
@@ -682,7 +741,7 @@ const AcSchedules = () => {
                         onChange={handleInputPortBChange}
                         required
                       >
-                        {INPUT_PORTS.map((inp) => {
+                        {INPUT_PORTS.slice(0, cntrlPrtQty.in + 1).map((inp) => {
                           return <option>{inp}</option>;
                         })}
                       </select>
@@ -712,9 +771,11 @@ const AcSchedules = () => {
                         onChange={handleOutputPortChange}
                         required
                       >
-                        {OUTPUT_PORTS.map((outp) => {
-                          return <option>{outp}</option>;
-                        })}
+                        {OUTPUT_PORTS.slice(0, cntrlPrtQty.out + 1).map(
+                          (outp) => {
+                            return <option>{outp}</option>;
+                          }
+                        )}
                       </select>
                     </td>
                     <td>
@@ -789,6 +850,51 @@ const AcSchedules = () => {
         )}
         {manuf == "Software House USTAR016" && (
           <SoftwareHouseUSTAR016
+            reader={reader}
+            input={input}
+            output={output}
+            acpName={acpName}
+            setAcpName={setAcpName}
+          />
+        )}
+        {manuf == "Software House ESTAR001" && (
+          <SoftwareHouseESTAR001
+            reader={reader}
+            input={input}
+            output={output}
+            acpName={acpName}
+            setAcpName={setAcpName}
+          />
+        )}
+        {manuf == "Software House ESTAR002" && (
+          <SoftwareHouseESTAR002
+            reader={reader}
+            input={input}
+            output={output}
+            acpName={acpName}
+            setAcpName={setAcpName}
+          />
+        )}
+        {manuf == "Software House ESTAR004" && (
+          <SoftwareHouseESTAR004
+            reader={reader}
+            input={input}
+            output={output}
+            acpName={acpName}
+            setAcpName={setAcpName}
+          />
+        )}
+        {manuf == "Software House ESTAR004-RM" && (
+          <SoftwareHouseESTAR004RM
+            reader={reader}
+            input={input}
+            output={output}
+            acpName={acpName}
+            setAcpName={setAcpName}
+          />
+        )}
+        {manuf == "Software House I8" && (
+          <SoftwareHouseI8
             reader={reader}
             input={input}
             output={output}

@@ -11,8 +11,8 @@ const linkClass =
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col bg-neutral-900 md:min-w-[270px] text-white ">
-      <div className="flex items-left justify-left my-6 pl-2">
+    <div className="flex flex-col bg-neutral-900 md:min-w-[250px] text-white ">
+      <div className="flex items-left justify-left my-6 pl-3">
         <img className="w-[220px] " src={Logac} alt="" />
       </div>
   

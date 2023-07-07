@@ -108,4 +108,6 @@ export const reset_name = {
   acp_location: "",
   // acp_model:"",
   acp_ip: "",
+  acp_address: "",
+  
 };

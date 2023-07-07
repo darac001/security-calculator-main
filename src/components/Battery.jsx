@@ -89,10 +89,10 @@ const Battery = () => {
   const [requiredBattery, setRequiredBattery] = useState(0);
 
   let totalStandbySum = currents.reduce((total, current) => {
-    return (Number(total) + Number(current.totalStandby)).toFixed(2);
+    return (Number(total) + Number(current.totalStandby)).toFixed(0);
   }, 0);
   let totalAlarmSum = currents.reduce((total, current) => {
-    return (Number(total) + Number(current.totalAlarm)).toFixed(2);
+    return (Number(total) + Number(current.totalAlarm)).toFixed(0);
   }, 0);
 
   const filteredCurrents = currents.filter((current) => {
@@ -314,26 +314,28 @@ const Battery = () => {
       theme: "striped",
       columnStyles: {
         0: {
-          columnWidth: 10,
+          columnWidth: 20,
         },
         1: {
-          columnWidth: 10,
+          columnWidth: 20,
         },
         2: {
-          columnWidth: 30,
+          columnWidth: 15,
         },
         3: {
-          columnWidth: 30,
+          columnWidth: 32,
         },
         4: {
-          columnWidth: 30,
+          columnWidth: 32,
         },
         5: {
-          columnWidth: 30,
+          columnWidth: 32,
         },
         6: {
-          columnWidth: 30,
+          columnWidth: 32,
         },
+
+
       },
 
       styles: {
@@ -345,11 +347,11 @@ const Battery = () => {
 
       headStyles: {
         valign: "middle",
-        halign: "left",
+        halign: "center",
         fillColor: [220, 220, 220],
         textColor: [0, 0, 0],
       },
-      bodyStyles: { valign: "middle", halign: "left", cellWidth: "50" },
+      bodyStyles: { valign: "middle", halign: "center", cellWidth: "50" },
     });
     doc.autoTable({
       columnStyles: {
@@ -392,6 +394,12 @@ const Battery = () => {
   // excel export
 
   const createExcel = () => {
+    const merge = [
+      // { s: { r: 0, c: 0 }, e: { r: 0, c: 1 } },
+      // { s: { r: 0, c: 2 }, e: { r: 0, c: 3 } },
+      // { s: { r: 0, c: 4 }, e: { r: 0, c: 5 } },
+      // { s: { r: 6, c: 0 }, e: { r: 6, c: 1 } },
+    ]
     const new_workbook = XLSX.utils.book_new();
     let tbl1 = document.getElementById("my-table");
     let tbl2 = document.getElementById("my-table2");
@@ -404,7 +412,8 @@ const Battery = () => {
 
     a = a.concat("").concat(b);
 
-    let worksheet = XLSX.utils.json_to_sheet(a, { skipHeader: true });
+    let worksheet = XLSX.utils.json_to_sheet(a, { origin: 0,skipHeader: true });
+    worksheet["!merges"] = merge;
     worksheet["!cols"] = [
       { width: 30 },
       { width: 20 },
@@ -422,6 +431,17 @@ const Battery = () => {
       { hpt: 20 },
     ];
     // worksheet["!cols"] = [{ s: { font: { bold: true, color: { rgb: "AA4A44" } } } }];
+
+    // XLSX.utils.sheet_add_aoa(
+    //   worksheet,
+    //   [["TOTALS", ]],
+    //   { origin: 0 }
+    // );
+    // XLSX.utils.sheet_add_aoa(
+    //   worksheet,
+    //   [["","", "STANDBY CURRENT", "",  "ALARM CURRENT", "", ]],
+    //   { origin: 0 }
+    // );
 
     XLSX.utils.book_append_sheet(new_workbook, worksheet, "worksheet");
     if (projectName) {
@@ -546,15 +566,11 @@ const Battery = () => {
                     <th scope="col" className="px-6 py-3">
                       STANDBY (mA)
                     </th>
-                    {/* <th scope="col" className="px-6 py-3">
-                      TOTAL mA
-                    </th> */}
+        
                     <th scope="col" className="px-6 py-3">
                       ALARM (mA)
                     </th>
-                    {/* <th scope="col" className="px-6 py-3">
-                      TOTAL mA
-                    </th> */}
+      
                   </tr>
                 </thead>
                 <tbody>
@@ -598,9 +614,7 @@ const Battery = () => {
                         className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  "
                       />
                     </td>
-                    {/* <td className=" md:w-full py-2 px-4 border border-[#e2e2e2] placeholder-gray-400  ">
-                      {currents.totalStandby}
-                    </td> */}
+      
                     <td>
                       <input
                         type="number"
@@ -631,8 +645,7 @@ const Battery = () => {
       </div>
 
       <div className="flex p-5 flex-col md:full w-full col-span-3" id="pdf">
-        {/* <div className="text-s font-bold text-white p-2 text-center bg-[#29abe0]">TOTALS</div> */}
-        {/* <hr className="mb-4"/> */}
+
         <form onSubmit={handleEditSubmit}>
           <table
             id="my-table"
@@ -648,27 +661,7 @@ const Battery = () => {
                   TOTALS
                 </th>
               </tr>
-              <tr>
-                <th
-                  scope="col"
-                  colSpan={3}
-                  className="px-6 py-3 text-center h-2 border border-[#e2e2e2]"
-                ></th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center h-2 border border-[#e2e2e2]"
-                  colSpan={2}
-                >
-                  STANDBY CURRENT
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center h-2 border border-[#e2e2e2]"
-                  colSpan={2}
-                >
-                  ALARM CURRENT
-                </th>
-              </tr>
+
               <tr>
                 <th
                   scope="col"
@@ -679,37 +672,40 @@ const Battery = () => {
                 </th>
                 <th
                   scope="col"
+                  colSpan={1}
                   className="px-6 py-3 text-center h-2 border border-[#e2e2e2]"
                 >
                   QTY.
                 </th>
                 <th
                   scope="col"
+                  colSpan={1}
                   className="px-6 py-3 text-center h-2 border border-[#e2e2e2]"
                 >
-                  mA
+                  STANDBY mA
                 </th>
                 <th
                   scope="col"
+                  colSpan={1}
                   className="px-6 py-3 text-center h-2 border border-[#e2e2e2]"
                 >
-                  TOTAL mA
+                  TOTAL STANDBY mA
                 </th>
                 <th
                   scope="col"
+                  colSpan={1}
                   className="px-6 py-3 text-center h-2 border border-[#e2e2e2]"
                 >
-                  mA
+                  ALARM mA
                 </th>
                 <th
                   scope="col"
+                  colSpan={1}
                   className="px-6 py-3 text-center h-2 border border-[#e2e2e2]"
                 >
-                  TOTAL mA
+                  TOTAL ALARM mA
                 </th>
-                {/* <th scope="col" className="px-6 py-3 text-center h-2 border border-[#e2e2e2]">
-                  ACTIONS
-                </th> */}
+
               </tr>
             </thead>
             <tbody>
