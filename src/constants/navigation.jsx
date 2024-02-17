@@ -17,7 +17,7 @@ import { ReactComponent as TableIcon } from '../assets/icon-table.svg'
 export const DASHBOARD_SIDEBAR_LINKS = [
 		{
 		key: '1',
-		label: 'ACS Schedules - In progress!',
+		label: 'ACS Schedules',
 		path: '/acschedules',
 		icon: <TableIcon />
 	},
